@@ -65,6 +65,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private void GetMovementInput()
     {
+        movement = Vector2.zero;
         // Get player input in both Horizontal and Vertical axes
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
@@ -100,6 +101,7 @@ public class PlayerMovementController : MonoBehaviour
 
             if (npcRaycastHit2D.collider != null)
             {
+                myAnimator.SetFloat("Speed", 0);
                 isEngagedInConversation = true;
                 npcDialogueTrigger = npcRaycastHit2D.collider.gameObject.
                     GetComponent<NpcDialogueTrigger>();
@@ -144,8 +146,8 @@ public class PlayerMovementController : MonoBehaviour
     {
         // Save player position in a Vector2
         Vector2 position = myRigidbody2D.position;
-        // Create a new Vector2 with the player current position and the player movement input
-        position += movement * movementSpeed * Time.fixedDeltaTime;
+        // Create a new Vector2 with the player current position and the normalized player movement input (normalized to prevent faster diagonal movement)
+        position += movement.normalized * movementSpeed * Time.fixedDeltaTime;
         // Pass the final Vector2 to the Rigidbody component
         myRigidbody2D.MovePosition(position);
     }

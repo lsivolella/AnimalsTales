@@ -23,6 +23,7 @@ public class PlayerCombatController : MonoBehaviour
     PlayerMovementController playerMovementController;
     Animator myAnimator;
     Rigidbody2D myRigidbody2D;
+    RigidbodyConstraints2D defaultConstraints;
 
     // Cached Attack Variables
     private float scratchCooldownTimer;
@@ -39,7 +40,7 @@ public class PlayerCombatController : MonoBehaviour
     private void Awake()
     {
         GetAccessToComponents();
-        SetDefaultBoolStates();
+        SetDefaultVariables();
     }
 
     private void GetAccessToComponents()
@@ -50,9 +51,10 @@ public class PlayerCombatController : MonoBehaviour
         myRigidbody2D = GetComponent<Rigidbody2D>();
     }
 
-    private void SetDefaultBoolStates()
+    private void SetDefaultVariables()
     {
         doKnockback = false;
+        defaultConstraints = myRigidbody2D.constraints;
     }
 
 
@@ -70,15 +72,17 @@ public class PlayerCombatController : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.Period) && !playerMovementController.IsInputFrozen)
                 {
+                    myRigidbody2D.constraints = RigidbodyConstraints2D.FreezePosition;
                     playerMovementController.CallFreezeInputCoroutine();
                     ScratchAttack();
                     scratchCooldownTimer = scratchCooldown;
+                    myRigidbody2D.constraints = defaultConstraints;
                 }
             }
             else
             {
                 scratchCooldownTimer -= Time.deltaTime;
-            } 
+            }
         }
     }
 
@@ -169,6 +173,14 @@ public class PlayerCombatController : MonoBehaviour
 
             // Call CameraShake
             CameraShake.Instance.CallShakeCoroutine();
+        }
+        else if (collision.gameObject.CompareTag("Bomb"))
+        {
+            if (collision.gameObject.GetComponent<BombController>().StartMoving == true)
+            {
+                Debug.Log("Touch bomb");
+                // myRigidbody2D.MovePosition(collision.gameObject.GetComponent<BombController>().EndPosition + Vector2.down);
+            }
         }
     }
 

@@ -9,11 +9,12 @@ public class HealhBarUI : MonoBehaviour
     // public static HealhBarUI instance { get; private set; }
     [SerializeField] Image mask;
 
+    public static HealhBarUI Instance { get; private set; }
     private float originalSize;
 
     private void Awake()
     {
-       // instance = this;
+        Instance = this;
     }
 
     // Start is called before the first frame update

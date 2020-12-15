@@ -31,6 +31,9 @@ public class BombController : MonoBehaviour
     private float percentualDistanceTravaled;
     private float bombSpeed;
 
+    public bool StartMoving { get { return startMoving; } }
+    public Vector2 EndPosition { get { return endPosition; } }
+
 
     private void Awake()
     {

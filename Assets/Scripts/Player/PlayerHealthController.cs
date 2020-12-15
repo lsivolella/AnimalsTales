@@ -109,8 +109,8 @@ public class PlayerHealthController : MonoBehaviour
             }
         }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        // HealhBarUI.instance.SetValue(currentHealth / (float)maxHealth);
-        healthBar.SetValue(currentHealth / (float)maxHealth);
+        HealhBarUI.Instance.SetValue(currentHealth / (float)maxHealth);
+        //healthBar.SetValue(currentHealth / (float)maxHealth);
         if (currentHealth <= 0)
         {
             PlayDeathRoutine();
