@@ -13,7 +13,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] DialogueController dialogueController;
 
     // Cached References
-    Rigidbody2D myRigidbody2D;
+    Rigidbody2D myRigidbody;
     Animator myAnimator;
 
     // Cached Movement Variables
@@ -22,7 +22,7 @@ public class PlayerMovementController : MonoBehaviour
     private Vector2 movement;
     private bool isInputFrozen;
     public bool IsInputFrozen { get { return isInputFrozen; } set { isInputFrozen = value; } }
-    public float GetFreezeInputCooldown {  get { return freezeInputCooldown; } }
+    public float FreezeInputCooldown {  get { return freezeInputCooldown; } }
 
     // Cached Animation Variables
     private Vector2 lookDirection = new Vector2(0, -1);
@@ -30,8 +30,8 @@ public class PlayerMovementController : MonoBehaviour
 
     // Cached Raycast Variables
     private bool isEngagedInConversation;
-    public bool GetConversationStatus { get { return isEngagedInConversation; } }
-    RaycastHit2D npcRaycastHit2D;
+    public bool IsEngagedInConversation { get { return isEngagedInConversation; } }
+    RaycastHit2D npcRaycastHit;
     NpcDialogueTrigger npcDialogueTrigger;
 
     private void Awake()
@@ -42,7 +42,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private void GetAccessToComponents()
     {
-        myRigidbody2D = GetComponent<Rigidbody2D>();
+        myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponentInChildren<Animator>();
         //dialogueController = GetComponent<DialogueController>();
     }
@@ -97,13 +97,13 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Comma) && !dialogueController.IsConversationActive)
         {
-            npcRaycastHit2D = CastDialogueRaycast();
+            npcRaycastHit = CastDialogueRaycast();
 
-            if (npcRaycastHit2D.collider != null)
+            if (npcRaycastHit.collider != null)
             {
                 myAnimator.SetFloat("Speed", 0);
                 isEngagedInConversation = true;
-                npcDialogueTrigger = npcRaycastHit2D.collider.gameObject.
+                npcDialogueTrigger = npcRaycastHit.collider.gameObject.
                     GetComponent<NpcDialogueTrigger>();
                 npcDialogueTrigger.DisplayDialogue();
                 npcDialogueTrigger.TriggerDialogue();
@@ -118,7 +118,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private RaycastHit2D CastDialogueRaycast()
     {
-         RaycastHit2D _raycastHit2D = Physics2D.Raycast(myRigidbody2D.position + Vector2.up * 0.2f,
+         RaycastHit2D _raycastHit2D = Physics2D.Raycast(myRigidbody.position + Vector2.up * 0.2f,
             lookDirection, raycastRange, LayerMask.GetMask("NPC"));
         return _raycastHit2D;
     }
@@ -145,11 +145,11 @@ public class PlayerMovementController : MonoBehaviour
     private void ProcessMovementInput()
     {
         // Save player position in a Vector2
-        Vector2 position = myRigidbody2D.position;
+        Vector2 position = myRigidbody.position;
         // Create a new Vector2 with the player current position and the normalized player movement input (normalized to prevent faster diagonal movement)
         position += movement.normalized * movementSpeed * Time.fixedDeltaTime;
         // Pass the final Vector2 to the Rigidbody component
-        myRigidbody2D.MovePosition(position);
+        myRigidbody.MovePosition(position);
     }
 
     public void CallFreezeInputCoroutine()
@@ -161,10 +161,12 @@ public class PlayerMovementController : MonoBehaviour
     {
         // Freeze input
         isInputFrozen = true;
+        // Time.timeScale = 0.1f;
 
         yield return new WaitForSeconds(freezeInputCooldown);
 
         // Unfreeze input
         isInputFrozen = false;
+        Time.timeScale = 1f;
     }
 }

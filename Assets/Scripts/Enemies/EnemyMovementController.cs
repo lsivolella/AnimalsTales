@@ -9,7 +9,7 @@ public class EnemyMovementController : MonoBehaviour
     [SerializeField] float movementSpeed = 1f;
 
     // Cached References
-    Rigidbody2D myRigidbody2D;
+    Rigidbody2D myRigidbody;
     Animator myAnimator;
 
     // Cached Movement Variables
@@ -33,7 +33,7 @@ public class EnemyMovementController : MonoBehaviour
 
     private void GetAccessToComponents()
     {
-        myRigidbody2D = GetComponent<Rigidbody2D>();
+        myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponentInChildren<Animator>();
     }
 
@@ -61,7 +61,10 @@ public class EnemyMovementController : MonoBehaviour
 
     private void GenerateRandomMovementVector()
     {
+        // Picks a random direction for the Enemy to move towards
         movementDirection = new Vector2(Random.Range(-1f, 1f), 0f).normalized;
+        // Resets any residual velocity
+        myRigidbody.velocity = Vector2.zero; 
         isMoving = true;
         movementDurationMeter = 0;
     }
@@ -101,9 +104,9 @@ public class EnemyMovementController : MonoBehaviour
         {
             if (isMoving)
             {
-                Vector2 position = myRigidbody2D.position;
+                Vector2 position = myRigidbody.position;
                 position += movementDirection * movementSpeed * Time.fixedDeltaTime;
-                myRigidbody2D.MovePosition(position);
+                myRigidbody.MovePosition(position);
             } 
         }
     }

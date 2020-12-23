@@ -13,9 +13,10 @@ public class PlayerHealthController : MonoBehaviour
     [SerializeField] [Range(0, 1)] float alphaFactor;
 
     // Cached References
-    Rigidbody2D myRigidbody2D;
+    Rigidbody2D myRigidbody;
     Animator myAnimator;
     PlayerMovementController playerMovementController;
+    PlayerCombatController playerCombatController;
     SpriteRenderer spriteRenderer;
 
     // Cached Health Variables
@@ -40,9 +41,10 @@ public class PlayerHealthController : MonoBehaviour
 
     private void GetAccessToComponents()
     {
-        myRigidbody2D = GetComponent<Rigidbody2D>();
+        myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponentInChildren<Animator>();
         playerMovementController = GetComponent<PlayerMovementController>();
+        playerCombatController = GetComponent<PlayerCombatController>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
@@ -117,11 +119,26 @@ public class PlayerHealthController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is responsible for handling other methods in the Standard Damage Routine.
+    /// The Standard Damage Routine includes: Health Penalty, Input Blockage and Knockback Displacement.
+    /// </summary>
+    /// <param name="damageAmount">The amount of damage the player will suffer.</param>
+    /// /// <param name="playerPosition">The Vector2 position of the player when damage was dealt.</param>
+    /// <param name="objectPosition">The Vector2 position of the object when damage was dealt.</param>
+        public void StandardDamageRoutine(int damageAmount, Vector2 playerPosition, Vector2 objectPosition)
+    {
+        // Damage Player
+        ChangeHealth(damageAmount);
+        // Knockback Player
+        playerCombatController.PlayKnockbackRoutine(playerPosition, objectPosition);
+    }
+
     private void PlayDeathRoutine()
     {
         playerMovementController.IsInputFrozen = true;
         myAnimator.SetTrigger("isDead");
-        myRigidbody2D.constraints = RigidbodyConstraints2D.FreezePosition;
+        myRigidbody.constraints = RigidbodyConstraints2D.FreezePosition;
         // TODO Open Dead player pop-up
         // TODO Choose to relive in "sanctuary" or pay gold to revive in place
     }

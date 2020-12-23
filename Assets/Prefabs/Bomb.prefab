@@ -1,35 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1267728715790586354
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8539222642397857935}
-  m_Layer: 0
-  m_Name: ColliderLeftPivot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8539222642397857935
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1267728715790586354}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.3, y: 0.225, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2715135915550485175}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2715135915550485168
 GameObject:
   m_ObjectHideFlags: 0
@@ -41,7 +11,6 @@ GameObject:
   - component: {fileID: 2715135915550485175}
   - component: {fileID: 2715135915550485174}
   - component: {fileID: 1860238842906264795}
-  - component: {fileID: 6027964592950540921}
   - component: {fileID: 1969814652}
   m_Layer: 0
   m_Name: Bomb Sprite
@@ -60,11 +29,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 8539222642397857935}
-  - {fileID: 3785628549208161861}
-  - {fileID: 3397316658275974946}
-  - {fileID: 8236321166358670515}
+  m_Children: []
   m_Father: {fileID: 5636375317516246265}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -113,7 +78,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.32}
+  m_Size: {x: 0.4642857, y: 0.5714286}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -138,20 +103,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6027964592950540921
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2715135915550485168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 704c680608a4c3042b67788ad0d00e8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCombatController1: {fileID: 0}
-  bombController: {fileID: 5267558064694755078}
 --- !u!114 &1969814652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,66 +196,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &4888193833415336847
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3397316658275974946}
-  m_Layer: 0
-  m_Name: ColliderRightPivot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3397316658275974946
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4888193833415336847}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 0.225, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2715135915550485175}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5063528134456922266
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8236321166358670515}
-  m_Layer: 0
-  m_Name: ColliderDownPivot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8236321166358670515
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5063528134456922266}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.085, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2715135915550485175}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5636375317516246271
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,7 +248,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 0e9f6fd9669265340b7281aeccf9664e, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 0
   m_CollisionDetection: 0
@@ -375,7 +266,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.003636837, y: 0.2694354}
+  m_Offset: {x: 0, y: 0.2694354}
   m_Size: {x: 0.50529575, y: 0.5056677}
   m_Direction: 0
 --- !u!114 &5267558064694755078
@@ -390,15 +281,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f276aef2eff81c418795bc0c68bced0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minimumThrowDistance: 1.7
-  maximumThrowDistance: 5
+  myCollider: {fileID: 5636375317516246267}
+  minimumThrowDistance: 2.2
+  maximumThrowDistance: 4
   minimumBombSpeed: 1.5
   maximumArcHight: 1
-  colliderLeftPivot: {fileID: 8539222642397857935}
-  colliderUpPivot: {fileID: 3785628549208161861}
-  colliderRightPivot: {fileID: 3397316658275974946}
-  colliderDownPivot: {fileID: 8236321166358670515}
-  colliderRange: 0.4
+  bombDamage: -1
+  explosionRadius: 0.7
+  fightingArenaMinimumHorizontalPosition: -3
+  fightingArenaMaximumHorizontalPosition: 3
 --- !u!114 &801065650342840958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,33 +305,3 @@ MonoBehaviour:
   bombSpeed: 1
   throwDistance: 5
   maximumHight: 2
---- !u!1 &8259336579515303745
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3785628549208161861}
-  m_Layer: 0
-  m_Name: ColliderUpPivot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3785628549208161861
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8259336579515303745}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.55, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2715135915550485175}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

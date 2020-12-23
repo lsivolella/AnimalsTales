@@ -121,4 +121,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a09ce6354b335e42851d3b8c685e413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthAmount: -1
+  passiveDamage: -1

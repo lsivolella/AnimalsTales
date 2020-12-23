@@ -26,8 +26,8 @@ public class EnemyHealthController : MonoBehaviour
 
     // Cached Invincibility Variables
     private float invincibleCooldownTimer;
-    public bool GetInvincibleStatus { get { return isInvincible; } }
     private bool isInvincible = false;
+    public bool IsInvincible { get { return isInvincible; } }
     private Color originalColor;
 
 
@@ -37,7 +37,7 @@ public class EnemyHealthController : MonoBehaviour
         SetHealthBarUI();
         SetEnemyHealth();
         GetAccessToComponents();
-        SetDefaultBoolStates();
+        SetDefaultVariables();
         GetOriginalSpriteColor();
     }
 
@@ -57,7 +57,7 @@ public class EnemyHealthController : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
-    private void SetDefaultBoolStates()
+    private void SetDefaultVariables()
     {
         isInvincible = false;
     }
@@ -110,7 +110,7 @@ public class EnemyHealthController : MonoBehaviour
         {
             isInvincible = true;
             invincibleCooldownTimer = invincibleCooldown;
-            currentHealth = Mathf.Clamp(currentHealth - amount, 0, maxHealth);
+            currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
             UpdateHealthBarUI();
         }
         if (currentHealth <= 0)
@@ -123,5 +123,18 @@ public class EnemyHealthController : MonoBehaviour
     {
         healthBarScale.x = healthPercentage * currentHealth;
         fullHealthBar.localScale = healthBarScale;
+    }
+
+    private void DropHat()
+    {
+        // TODO: call hat animation: it is going to spawn at the place where the redish cat is and then slowly fall down to a place the player can pick it up
+        // TODO: UI square to indicate the player has the hat in his inventory
+        // TODO: orange cat sprite with the hat
+        // TODO: new dialogue when the hat is given to the orange cat and another one for after that
+        // TODO: scene transition when player hit trigger (to be created) taking player to the cave
+        // TODO: transition to the way back... redish cat recovers all energy and has new dialogues
+        // TODO: make sure entering the cave after black cat is defeat wont spawn him again
+        // TODO: create a minion for the black cat that spawns randomly and attacks the player?
+        // TODO: create cave scene
     }
 }

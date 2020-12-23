@@ -5,10 +5,10 @@ using UnityEngine;
 public class PlayerCombatController : MonoBehaviour
 {
     [Header("Attack")]
-    [SerializeField] int scratchDamage = 1;
+    [SerializeField] int scratchDamage = -1;                  // Damage dealt is always negative (positive for Healing)
     [SerializeField] float scratchCooldown = 1f;
     [SerializeField] public float attackRange = 1f;
-    [SerializeField] int passiveDamage = 1;                 // Player damage is always positive (enemies only take damage)
+    [SerializeField] int passiveDamage = -1;                 // Damage dealt is always negative (positive for Healing)
     [SerializeField] public Transform scratchLeftPivot;
     [SerializeField] public Transform scratchUpPivot;
     [SerializeField] public Transform scratchRightPivot;
@@ -66,17 +66,19 @@ public class PlayerCombatController : MonoBehaviour
 
     private void GetAttackInput()
     {
-        if (!playerMovementController.IsInputFrozen && !playerMovementController.GetConversationStatus)
+        if (!playerMovementController.IsInputFrozen && !playerMovementController.IsEngagedInConversation)
         {
             if (scratchCooldownTimer <= 0)
             {
                 if (Input.GetKeyDown(KeyCode.Period) && !playerMovementController.IsInputFrozen)
                 {
-                    myRigidbody2D.constraints = RigidbodyConstraints2D.FreezePosition;
+                    // Reset any velocity residual values. They may occur when the Player colliders with another body.
+                    myRigidbody2D.velocity = Vector2.zero;
+                    // myRigidbody2D.constraints = RigidbodyConstraints2D.FreezePosition;
                     playerMovementController.CallFreezeInputCoroutine();
                     ScratchAttack();
                     scratchCooldownTimer = scratchCooldown;
-                    myRigidbody2D.constraints = defaultConstraints;
+                    // myRigidbody2D.constraints = defaultConstraints;
                 }
             }
             else
@@ -136,19 +138,21 @@ public class PlayerCombatController : MonoBehaviour
 
         foreach (Collider2D bombTarget in bombTargets)
         {
-            bombTarget.GetComponent<BombController>().SetUpThrowAgainstCaster();
+            // Prevent from hitting the Bomb in any other situation
+            if (bombTarget.GetComponent<BombController>().BombStateGet == BombController.BombState.GroundedAtPlayerArea)
+            {
+                bombTarget.GetComponent<BombController>().SetUpThrowAgainstCaster();
+            }
         }
     }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
             // Damage Player
-            playerHealthController.ChangeHealth(collision.gameObject.GetComponent<EnemyCombatController>().GetPassiveDamage);
-
-            // Freeze Player Input
-            playerMovementController.CallFreezeInputCoroutine();
+            playerHealthController.ChangeHealth(collision.gameObject.GetComponent<EnemyCombatController>().PassiveDamage);
 
             // Do Knockback
             PlayKnockbackRoutine(collision.otherCollider.transform.position,
@@ -161,10 +165,7 @@ public class PlayerCombatController : MonoBehaviour
         {
             // Damage Player
             //playerHealthController.ChangeHealth(collision.gameObject.GetComponent<PersistentHarmfulObject>().GetPassiveDamage);
-
-            // Freeze Player Input
-            playerMovementController.CallFreezeInputCoroutine();
-
+                       
             // collision.otherCollider = Player
             // collision.gameObject = Whom Player Collided with
             // Do Knockback
@@ -176,7 +177,7 @@ public class PlayerCombatController : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Bomb"))
         {
-            if (collision.gameObject.GetComponent<BombController>().StartMoving == true)
+            if (collision.gameObject.GetComponent<BombController>().BombStateGet == BombController.BombState.FlyingToPlayer)
             {
                 Debug.Log("Touch bomb");
                 // myRigidbody2D.MovePosition(collision.gameObject.GetComponent<BombController>().EndPosition + Vector2.down);
@@ -205,6 +206,9 @@ public class PlayerCombatController : MonoBehaviour
 
     public void PlayKnockbackRoutine(Vector2 playerPosition, Vector2 objectPosition)
     {
+        // Freeze Player Input
+        playerMovementController.CallFreezeInputCoroutine();
+        // Define Direction of Displacement Vector2
         knockbackStartPosition = playerPosition;
         Vector2 _directionOfKnockback = playerPosition - objectPosition;
         knockbackEndPosition = playerPosition + (_directionOfKnockback.normalized * knockbackForce);

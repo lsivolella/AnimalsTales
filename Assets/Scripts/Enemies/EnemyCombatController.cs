@@ -7,12 +7,12 @@ public class EnemyCombatController : MonoBehaviour
     [Header("Attack")]
     [SerializeField] float bombCooldown = 1f;
     [Header("Passive Damage")]
-    [SerializeField] int passiveDamage = -1;    // Enemies damage is always negative (positive values are for Healing)
+    [SerializeField] int passiveDamage = -1;    // Damage dealt is always negative (positive for Healing)
 
     // Cached References
     EnemyHealthController enemyHealthController;
     EnemySpriteAnimation spriteAnimation;
-    Rigidbody2D myRigidbody2D;
+    Rigidbody2D myRigidbody;
     Animator myAnimator;
 
     // Cached Attack Variables
@@ -22,7 +22,7 @@ public class EnemyCombatController : MonoBehaviour
 
 
     // Properties
-    public int GetPassiveDamage { get { return passiveDamage; } }
+    public int PassiveDamage { get { return passiveDamage; } }
     public bool IsAttacking { get { return isAttacking; } set { isAttacking = value; } }
 
 
@@ -35,7 +35,7 @@ public class EnemyCombatController : MonoBehaviour
     private void GetAccessToComponents()
     {
         enemyHealthController = GetComponent<EnemyHealthController>();
-        myRigidbody2D = GetComponent<Rigidbody2D>();
+        myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponentInChildren<Animator>();
         spriteAnimation = GetComponentInChildren<EnemySpriteAnimation>();
     }
@@ -72,7 +72,7 @@ public class EnemyCombatController : MonoBehaviour
 
     private void ShootBomb()
     {
-        if (canAttack && !isAttacking)
+        if (canAttack && !isAttacking && !enemyHealthController.IsInvincible)
         {
             spriteAnimation.InstantiateBomb();
             bombCooldownTimer = bombCooldown; 

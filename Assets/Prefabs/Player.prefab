@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 6113062834944328193}
   - component: {fileID: 6113062835003219235}
   - component: {fileID: 5966065619884413022}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -167,10 +167,10 @@ Rigidbody2D:
   m_GameObject: {fileID: 6113062834944328255}
   m_BodyType: 0
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 100
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -187,7 +187,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 6113062834944328255}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 0e9f6fd9669265340b7281aeccf9664e, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07455977448a184418c0da5bdcb645b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scratchDamage: 1
+  scratchDamage: -1
   scratchCooldown: 0.5
   attackRange: 0.3
   passiveDamage: 1
@@ -379,8 +379,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 704c680608a4c3042b67788ad0d00e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCombatController1: {fileID: 6113062835003219235}
-  bombController: {fileID: 0}
 --- !u!1 &6113062835795135850
 GameObject:
   m_ObjectHideFlags: 0
