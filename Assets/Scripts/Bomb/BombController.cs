@@ -244,4 +244,6 @@ public class BombController : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+    // test
 }
