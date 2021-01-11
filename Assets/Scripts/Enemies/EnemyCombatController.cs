@@ -13,7 +13,6 @@ public class EnemyCombatController : MonoBehaviour
     EnemyHealthController enemyHealthController;
     EnemySpriteAnimation spriteAnimation;
     Rigidbody2D myRigidbody;
-    Animator myAnimator;
 
     // Cached Attack Variables
     private bool canAttack;
@@ -36,7 +35,6 @@ public class EnemyCombatController : MonoBehaviour
     {
         enemyHealthController = GetComponent<EnemyHealthController>();
         myRigidbody = GetComponent<Rigidbody2D>();
-        myAnimator = GetComponentInChildren<Animator>();
         spriteAnimation = GetComponentInChildren<EnemySpriteAnimation>();
     }
 

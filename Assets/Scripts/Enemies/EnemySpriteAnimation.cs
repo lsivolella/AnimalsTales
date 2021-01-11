@@ -62,4 +62,9 @@ public class EnemySpriteAnimation : MonoBehaviour
         enemyMovementController.CanMove = true;
         enemyCombatController.IsAttacking = false;
     }
+
+    private void FireArrow()
+    {
+
+    }
 }

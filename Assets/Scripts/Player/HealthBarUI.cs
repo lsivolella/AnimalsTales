@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealhBarUI : MonoBehaviour
+public class HealthBarUI : MonoBehaviour
 {
     // TODO: figure out why player is suddenly losing reference to the HealthBarUI
-    // public static HealhBarUI instance { get; private set; }
+    // public static HealhBarUI Instance { get; private set; }
     [SerializeField] Image mask;
 
-    public static HealhBarUI Instance { get; private set; }
+    public static HealthBarUI Instance { get; private set; }
     private float originalSize;
 
     private void Awake()

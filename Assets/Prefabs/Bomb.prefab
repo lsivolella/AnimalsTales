@@ -184,7 +184,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 786960933
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 71faf59bfbbd73c4e8ceaa4056f6a3b4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -284,8 +284,10 @@ MonoBehaviour:
   myCollider: {fileID: 5636375317516246267}
   minimumThrowDistance: 2.2
   maximumThrowDistance: 4
-  minimumBombSpeed: 1.5
+  minimumBombSpeed: 2
   maximumArcHight: 1
+  fragmentPrefab: {fileID: 715660484779827566, guid: 38d5d6b6965477b4eb20a070ddc74c35,
+    type: 3}
   bombDamage: -1
   explosionRadius: 0.7
   fightingArenaMinimumHorizontalPosition: -3

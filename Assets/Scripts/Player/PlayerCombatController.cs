@@ -151,29 +151,17 @@ public class PlayerCombatController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            // Damage Player
-            playerHealthController.ChangeHealth(collision.gameObject.GetComponent<EnemyCombatController>().PassiveDamage);
-
-            // Do Knockback
-            PlayKnockbackRoutine(collision.otherCollider.transform.position,
+            playerHealthController.StandardDamageRoutine(
+                collision.gameObject.GetComponent<EnemyCombatController>().PassiveDamage,
+                collision.otherCollider.transform.position,
                 collision.gameObject.transform.position);
-
-            // Call CameraShake
-            CameraShake.Instance.CallShakeCoroutine();
         }
         else if (collision.gameObject.CompareTag("HarmfullObject"))
         {
-            // Damage Player
-            //playerHealthController.ChangeHealth(collision.gameObject.GetComponent<PersistentHarmfulObject>().GetPassiveDamage);
-                       
-            // collision.otherCollider = Player
-            // collision.gameObject = Whom Player Collided with
-            // Do Knockback
-            PlayKnockbackRoutine(collision.otherCollider.transform.position,
+            playerHealthController.StandardDamageRoutine(
+                collision.gameObject.GetComponent<PersistentHarmfulObject>().PassiveDamage,
+                collision.otherCollider.transform.position,
                 collision.gameObject.transform.position);
-
-            // Call CameraShake
-            CameraShake.Instance.CallShakeCoroutine();
         }
         else if (collision.gameObject.CompareTag("Bomb"))
         {
@@ -182,6 +170,14 @@ public class PlayerCombatController : MonoBehaviour
                 Debug.Log("Touch bomb");
                 // myRigidbody2D.MovePosition(collision.gameObject.GetComponent<BombController>().EndPosition + Vector2.down);
             }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Fragment"))
+        {
+            playerHealthController.StaticDamageRoutine(collision.gameObject.GetComponent<FragmentController>().PassiveDamage);
         }
     }
 
@@ -214,7 +210,7 @@ public class PlayerCombatController : MonoBehaviour
         knockbackEndPosition = playerPosition + (_directionOfKnockback.normalized * knockbackForce);
         // Initialize knockback timer
         timeKnockbackStarted = Time.time;
-        // Allow for knockback displacement
+        // Allow knockback displacement
         doKnockback = true;
         // Trigger knockback animation
         myAnimator.SetBool("doKnockback", true);
@@ -222,7 +218,7 @@ public class PlayerCombatController : MonoBehaviour
 
     private Vector2 PerformKnockbackDisplacement(Vector2 start, Vector2 end, float timeStarted, float duration)
     {
-        // Create a time meter
+        // Update time meter
         timeSinceKnockbackStarted = Time.time - timeStarted;
         // Use the time meter to measure completion
         float percentageCompleted = timeSinceKnockbackStarted / duration;
@@ -238,9 +234,9 @@ public class PlayerCombatController : MonoBehaviour
     {
         // Set the maximum height in the arc the sprite is going to be deslocated
         float maximumDisplacement = 0.2f;
-        // Calculate the height based on the knockbac displacement completition
-        var zIncrease = Mathf.Sin(percentageCompleted * Mathf.PI) * maximumDisplacement;
-        // Create a new Vector2 to store the value
+        // Calculate the height based on the knockback displacement completition
+        float zIncrease = Mathf.Sin(percentageCompleted * Mathf.PI) * maximumDisplacement;
+        // Create a new Vector2 to store the result
         Vector2 playerSpritePosition = new Vector2(0, zIncrease);
         // Apply the Vector2 to the Player Sprite child component
         transform.GetChild(0).GetComponent<Transform>().transform.localPosition = playerSpritePosition;

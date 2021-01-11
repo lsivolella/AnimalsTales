@@ -12,6 +12,7 @@ public class BombController : MonoBehaviour
     [SerializeField] float minimumBombSpeed = 1f;
     [SerializeField] float maximumArcHight = 1f;
     [Header("Bomb Detonation")]
+    [SerializeField] GameObject fragmentPrefab;
     [SerializeField] int bombDamage = -1;   // Damage dealt is always negative (positive for Healing)
     [SerializeField] public float explosionRadius = 1f;
     [Header("Fighting Area")]
@@ -201,7 +202,8 @@ public class BombController : MonoBehaviour
                 // Determine wheater Bomb and Enemy are on the left or right side or the fighting arena
                 // And define witch side should the padding be applied to
                 // Left Side > Bomb goes to the right (no need to change padding)
-                float centerPoint = fightingArenaMaximumHorizontalPosition - fightingArenaMinimumHorizontalPosition / 2;
+                float centerPoint = (fightingArenaMaximumHorizontalPosition + fightingArenaMinimumHorizontalPosition) / 2f;
+                Debug.Log(centerPoint);
                 if (transform.position.x >= centerPoint)
                 {
                     // Right Side > Bomb goes to the left > Dominant Side
@@ -242,8 +244,33 @@ public class BombController : MonoBehaviour
 
     public void SelfDestruct()
     {
+        if (bombState == BombState.GroundedAtPlayerArea)
+            InstantiateBombFragment();
         Destroy(gameObject);
     }
 
-    // test
+    private void InstantiateBombFragment()
+    {
+        float angle = Random.Range(0, 360f);
+        float angleStep = 360f / 3;
+
+        for (int i = 0; i < 3; i++)
+        {
+            float xDestination = Mathf.Sin((angle * Mathf.PI) / 180);
+            float yDestination = Mathf.Cos((angle * Mathf.PI) / 180);
+
+            Vector2 fragmentOrigin = new Vector2(transform.position.x + xDestination * 0.3f,
+                transform.position.y + yDestination * 0.3f);
+            Vector2 fragmentDestination = new Vector2(transform.position.x + xDestination * 0.5f, 
+                transform.position.y + yDestination * 0.5f);
+            //Debug.Log("Origin " + fragmentOrigin);
+            //Debug.Log("Destination " + fragmentDestination);
+
+
+            GameObject fragment = Instantiate(fragmentPrefab, fragmentOrigin, Quaternion.identity);
+            fragment.GetComponent<FragmentController>().SetFragmentMovement(fragmentDestination);
+
+            angle += angleStep;
+        }
+    }
 }
