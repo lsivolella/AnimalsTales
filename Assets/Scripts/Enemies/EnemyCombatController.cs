@@ -5,7 +5,8 @@ using UnityEngine;
 public class EnemyCombatController : MonoBehaviour
 {
     [Header("Attack")]
-    [SerializeField] float bombCooldown = 1f;
+    [SerializeField] float attackCooldown = 1f;
+    [SerializeField] [Range (0, 1)] float bombAttackProbability = 1f;
     [Header("Passive Damage")]
     [SerializeField] int passiveDamage = -1;    // Damage dealt is always negative (positive for Healing)
 
@@ -17,7 +18,7 @@ public class EnemyCombatController : MonoBehaviour
     // Cached Attack Variables
     private bool canAttack;
     private bool isAttacking;
-    private float bombCooldownTimer;
+    private float attackCooldownTimer;
 
 
     // Properties
@@ -42,29 +43,47 @@ public class EnemyCombatController : MonoBehaviour
     {
         canAttack = false;
         isAttacking = false;
-        bombCooldownTimer = bombCooldown;
+        attackCooldownTimer = attackCooldown;
     }
 
     // Update is called once per frame
     void Update()
     {
         HandleAttackCooldown();
-        ShootBomb();
     }
 
     private void HandleAttackCooldown()
     {
         if (!isAttacking)
         {
-            if (bombCooldownTimer <= 0)
+            if (attackCooldownTimer <= 0)
             {
                 canAttack = true;
+                SelectRandomAttack();
             }
             else
             {
                 canAttack = false;
-                bombCooldownTimer -= Time.deltaTime;
+                attackCooldownTimer -= Time.deltaTime;
             } 
+        }
+    }
+
+    private void SelectRandomAttack()
+    {
+        float randomNumber = Random.Range(0f, 1f);
+        if (randomNumber <= (1 - bombAttackProbability))
+            ShootArrow();
+        else
+            ShootBomb();
+    }
+
+    private void ShootArrow()
+    {
+        if (canAttack && !isAttacking && !enemyHealthController.IsInvincible)
+        {
+            spriteAnimation.PrepareBow();
+            attackCooldownTimer = attackCooldown;
         }
     }
 
@@ -72,8 +91,8 @@ public class EnemyCombatController : MonoBehaviour
     {
         if (canAttack && !isAttacking && !enemyHealthController.IsInvincible)
         {
-            spriteAnimation.InstantiateBomb();
-            bombCooldownTimer = bombCooldown; 
+            spriteAnimation.PrepareBomb();
+            attackCooldownTimer = attackCooldown; 
         }
     }
 

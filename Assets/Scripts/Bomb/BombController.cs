@@ -263,8 +263,6 @@ public class BombController : MonoBehaviour
                 transform.position.y + yDestination * 0.3f);
             Vector2 fragmentDestination = new Vector2(transform.position.x + xDestination * 0.5f, 
                 transform.position.y + yDestination * 0.5f);
-            //Debug.Log("Origin " + fragmentOrigin);
-            //Debug.Log("Destination " + fragmentDestination);
 
 
             GameObject fragment = Instantiate(fragmentPrefab, fragmentOrigin, Quaternion.identity);

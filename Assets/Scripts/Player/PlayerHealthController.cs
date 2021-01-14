@@ -128,12 +128,15 @@ public class PlayerHealthController : MonoBehaviour
     /// <param name="objectPosition">The Vector2 position of the object when damage was dealt.</param>
         public void StandardDamageRoutine(int damageAmount, Vector2 playerPosition, Vector2 objectPosition)
     {
-        // Damage Player
-        ChangeHealth(damageAmount);
-        // Knockback Player
-        playerCombatController.PlayKnockbackRoutine(playerPosition, objectPosition);
-        // Camera Shake
-        CameraShake.Instance.CallShakeCoroutine();
+        if (!isInvincible)
+        {
+            // Damage Player
+            ChangeHealth(damageAmount);
+            // Knockback Player
+            playerCombatController.PlayKnockbackRoutine(playerPosition, objectPosition);
+            // Camera Shake
+            CameraShake.Instance.CallShakeCoroutine(); 
+        }
     }
 
     /// <summary>
@@ -143,8 +146,11 @@ public class PlayerHealthController : MonoBehaviour
     /// <param name="damageAmount">The amount of damage the player will suffer.</param>
     public void StaticDamageRoutine(int damageAmount)
     {
-        // Damage Player
-        ChangeHealth(damageAmount);
+        if (!isInvincible)
+        {
+            // Damage Player
+            ChangeHealth(damageAmount);
+        }
     }
 
     private void PlayDeathRoutine()

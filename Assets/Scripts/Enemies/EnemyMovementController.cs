@@ -17,7 +17,7 @@ public class EnemyMovementController : MonoBehaviour
     //private bool canMove = true;
     private bool canMove = true;
     private bool isMoving = true;
-    private float durationOfMovement = 2f;
+    private float durationOfMovement = 0.2f;
     private float movementDurationMeter; // The distance the enemy has walked
 
     // Properties

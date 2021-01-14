@@ -6,6 +6,8 @@ public class EnemySpriteAnimation : MonoBehaviour
 {
     [Header("Bomb Attack")]
     [SerializeField] GameObject bombPrefab;
+    [Header("Arrow Attack")]
+    [SerializeField] GameObject arrowPrefab;
 
 
     // Cached References
@@ -32,7 +34,14 @@ public class EnemySpriteAnimation : MonoBehaviour
 
     }
 
-    public void InstantiateBomb()
+    public void PrepareBow()
+    {
+        myAnimator.SetTrigger("prepareBow");
+        enemyMovementController.CanMove = false;
+        enemyCombatController.IsAttacking = true;
+    }
+
+    public void PrepareBomb()
     {
         myAnimator.SetBool("pickBomb", true);
         enemyMovementController.CanMove = false;
@@ -63,8 +72,11 @@ public class EnemySpriteAnimation : MonoBehaviour
         enemyCombatController.IsAttacking = false;
     }
 
-    private void FireArrow()
+    private void ShootArrow()
     {
-
+        enemyMovementController.CanMove = true;
+        enemyCombatController.IsAttacking = false;
+        Vector2 startPosition = new Vector2(transform.position.x, transform.position.y + 0.3f);
+        Instantiate(arrowPrefab, startPosition, Quaternion.identity);
     }
 }

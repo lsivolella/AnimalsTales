@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: RedishCatBowDown
+  m_Name: ReddishCatAimBowDown
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -22,19 +22,19 @@ AnimationClip:
     - time: 0
       value: {fileID: -4420248630753461286, guid: 1234bc1ad3dbb614a942f54c962d3a1d,
         type: 3}
-    - time: 0.06666667
+    - time: 0.04
       value: {fileID: 18542014554907015, guid: 1234bc1ad3dbb614a942f54c962d3a1d, type: 3}
-    - time: 0.13333334
+    - time: 0.08
       value: {fileID: -6831873528465828861, guid: 1234bc1ad3dbb614a942f54c962d3a1d,
         type: 3}
-    - time: 0.2
+    - time: 0.12
       value: {fileID: -1907113572748789302, guid: 1234bc1ad3dbb614a942f54c962d3a1d,
         type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
     script: {fileID: 0}
-  m_SampleRate: 15
+  m_SampleRate: 25
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -58,7 +58,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.26666668
+    m_StopTime: 0.16
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -78,8 +78,8 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.2
-    functionName: FireArrow
+  - time: 0.12
+    functionName: ShootArrow
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
