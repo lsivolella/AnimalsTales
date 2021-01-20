@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyCombatController : MonoBehaviour
+public class ReddishCatCombatController : MonoBehaviour
 {
+    // Serialized Parameters
     [Header("Attack")]
     [SerializeField] float attackCooldown = 1f;
     [SerializeField] [Range (0, 1)] float bombAttackProbability = 1f;
@@ -11,8 +12,8 @@ public class EnemyCombatController : MonoBehaviour
     [SerializeField] int passiveDamage = -1;    // Damage dealt is always negative (positive for Healing)
 
     // Cached References
-    EnemyHealthController enemyHealthController;
-    EnemySpriteAnimation spriteAnimation;
+    ReddishCatHealthController reddishCatHealthController;
+    ReddishCatAnimationController reddishMinionAnimationController;
     Rigidbody2D myRigidbody;
 
     // Cached Attack Variables
@@ -34,9 +35,9 @@ public class EnemyCombatController : MonoBehaviour
 
     private void GetAccessToComponents()
     {
-        enemyHealthController = GetComponent<EnemyHealthController>();
+        reddishCatHealthController = GetComponent<ReddishCatHealthController>();
         myRigidbody = GetComponent<Rigidbody2D>();
-        spriteAnimation = GetComponentInChildren<EnemySpriteAnimation>();
+        reddishMinionAnimationController = GetComponentInChildren<ReddishCatAnimationController>();
     }
 
     private void SetUpVariables()
@@ -80,18 +81,18 @@ public class EnemyCombatController : MonoBehaviour
 
     private void ShootArrow()
     {
-        if (canAttack && !isAttacking && !enemyHealthController.IsInvincible)
+        if (canAttack && !isAttacking && !reddishCatHealthController.IsInvincible)
         {
-            spriteAnimation.PrepareBow();
+            reddishMinionAnimationController.PrepareBow();
             attackCooldownTimer = attackCooldown;
         }
     }
 
     private void ShootBomb()
     {
-        if (canAttack && !isAttacking && !enemyHealthController.IsInvincible)
+        if (canAttack && !isAttacking && !reddishCatHealthController.IsInvincible)
         {
-            spriteAnimation.PrepareBomb();
+            reddishMinionAnimationController.PrepareBomb();
             attackCooldownTimer = attackCooldown; 
         }
     }
@@ -100,7 +101,7 @@ public class EnemyCombatController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            enemyHealthController.ChangeEnemyHealth(collision.gameObject.GetComponent<PlayerCombatController>().GetPassiveDamage);
+            reddishCatHealthController.ChangeEnemyHealth(collision.gameObject.GetComponent<PlayerCombatController>().GetPassiveDamage);
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         }
     }

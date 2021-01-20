@@ -69,8 +69,6 @@ public class PlayerCombatController : MonoBehaviour
         partialExtent = minimumExtent * (1.0f - skinWidth);
         squareMinimumExtent = Mathf.Pow(minimumExtent, 2f);
         previousPosition = myRigidbody.position;
-        Debug.Log("Bounds: " + myCollider.bounds.ToString("f3"));
-        Debug.Log("Bounds Extents: " + myCollider.bounds.extents.ToString("f3"));
     }
 
 
@@ -141,7 +139,7 @@ public class PlayerCombatController : MonoBehaviour
         foreach (Collider2D target in targets)
         {
             // Damage Targets
-            target.GetComponent<EnemyHealthController>().ChangeEnemyHealth(scratchDamage);
+            target.GetComponent<ReddishCatHealthController>().ChangeEnemyHealth(scratchDamage);
 
             // Freeze Player Input
             playerMovementController.CallFreezeInputCoroutine();
@@ -168,7 +166,7 @@ public class PlayerCombatController : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             playerHealthController.StandardDamageRoutine(
-                collision.gameObject.GetComponent<EnemyCombatController>().PassiveDamage,
+                collision.gameObject.GetComponent<ReddishCatCombatController>().PassiveDamage,
                 collision.otherCollider.transform.position,
                 collision.gameObject.transform.position);
         }
@@ -277,27 +275,33 @@ public class PlayerCombatController : MonoBehaviour
 
     private Vector2 CrossingWallPrevention()
     {
-        //// Has the object moved more than the minimum extent?
-        //Vector2 movementThisStep = myRigidbody.position - previousPosition;
-        //float movementSquareMagnitude = movementThisStep.sqrMagnitude;
+        //RaycastHit2D raycast = Physics2D.Raycast(knockbackStartPosition, knockbackEndPosition - knockbackStartPosition, knockbackForce, LayerMask.GetMask("Walls"));
+        RaycastHit2D linecast = Physics2D.Linecast(knockbackStartPosition, knockbackEndPosition, LayerMask.GetMask("Walls"));
+        Vector2 newKnockbackEndPosition = knockbackEndPosition;
+        if (linecast.point != Vector2.zero)
+        {
+            Vector2 knockbackDirectionNormalized = (knockbackEndPosition - knockbackStartPosition).normalized;
 
-        //if (movementSquareMagnitude > squareMinimumExtent)
-        //{
-        //    float movementMagnitude = Mathf.Sqrt(movementSquareMagnitude);
-        //    RaycastHit2D hitInfo;
+            newKnockbackEndPosition = new Vector2(linecast.point.x + (myCollider.bounds.extents.x * 2 * -1f * Mathf.Sign(knockbackDirectionNormalized.x)), 
+                linecast.point.y + (myCollider.bounds.extents.y * 2 * -1f * Mathf.Sign(knockbackDirectionNormalized.y)));
 
-        //    // Check for obstructions that might have been missed
-        //    //if (Physics.Raycast(previousPosition, movementThisStep, out hitInfo, movementMagnitude, layerMask.value));
-        //}
+            //if (Mathf.Abs(knockbackDirectionNormalized.x) >= Mathf.Abs(knockbackDirectionNormalized.y))
+            //    newKnockbackEndPosition = new Vector2(linecast.point.x + (myCollider.bounds.extents.x * -1f * Mathf.Sign(knockbackDirectionNormalized.x)), linecast.point.y);
+            //else
+            //    newKnockbackEndPosition = new Vector2(linecast.point.x, linecast.point.y + (myCollider.bounds.extents.y * -1f * Mathf.Sign(knockbackDirectionNormalized.y)));
 
-        RaycastHit2D _raycastHit2D = Physics2D.Raycast(knockbackStartPosition, knockbackEndPosition - knockbackStartPosition, knockbackForce, LayerMask.GetMask("Walls"));
-        RaycastHit2D _linecastHit2D = Physics2D.Linecast(knockbackStartPosition, knockbackEndPosition, LayerMask.GetMask("Walls"));
+        }
+
+
+        Debug.Log("Bounds: " + myCollider.bounds.center.ToString("f3"));
+        Debug.Log("Extents: " + myCollider.bounds.extents.ToString("f3"));
         Debug.Log("Origin" + knockbackStartPosition.ToString("f3"));
         Debug.Log("Destination" + knockbackEndPosition.ToString("f3"));
-        Debug.Log("Contact Point:" + _raycastHit2D.point.ToString("f3"));
-        Vector2 _newKnockbackEndPosition = new Vector2 (_raycastHit2D.point.x + myCollider.bounds.extents.x, _raycastHit2D.point.y);
-        Debug.Log("New Knockback End Position: " + _newKnockbackEndPosition);
+        Debug.Log("Contact Point:" + linecast.point.ToString("f3"));
+        Debug.Log("New Knockback End Position: " + newKnockbackEndPosition.ToString("f3"));
         Debug.Log("Knockback Direction: " + (knockbackEndPosition - knockbackStartPosition).normalized.ToString("f3"));
-        return _newKnockbackEndPosition;
+
+
+        return newKnockbackEndPosition;
     }
 }

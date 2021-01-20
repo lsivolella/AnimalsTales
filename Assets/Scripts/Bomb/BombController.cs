@@ -34,8 +34,6 @@ public class BombController : MonoBehaviour
     // Cached Variables
     private Vector2 positionWhenThrownByEnemy;
     private Vector2 positionWhenLanded;
-    private bool startMoving = false;
-    private bool travelBack = false;
     private float randomlyPickedThrowDistance;
     private float timeWhenWasThrown = 0f;
     private float distanceTraveled = 0f;
@@ -43,7 +41,6 @@ public class BombController : MonoBehaviour
     private float bombSpeed;
 
     // Properties
-    public bool StartMoving { get { return startMoving; } }
     public BombState BombStateGet { get { return bombState; } }
     public Vector2 PositionWhenLanded { get { return positionWhenLanded; } }
 
@@ -79,13 +76,13 @@ public class BombController : MonoBehaviour
         positionWhenLanded = positionWhenThrownByEnemy + Vector2.down * randomlyPickedThrowDistance;
         // Get a Time reference for the moment the action begun
         timeWhenWasThrown = Time.time;
-        // startMoving = true;
         bombState = BombState.FlyingToPlayer;
     }
 
     public void SetUpThrowAgainstCaster()
     {
-        // Adjusts the start position so that the Bomb falls in the same y coordinate as the enemy, blocking his movements
+        // Adjusts the start position so that the Bomb falls in the same y coordinate
+        // as the enemy, when thrown back by the player, blocking his horizontal movements
         positionWhenThrownByEnemy += Vector2.down * 0.5f;
         // Check if the Enemy in in front of the Bomb and, if positive, return his position
         Vector2 _newPositionWhenThrownByEnemy = LaunchRaycast(positionWhenThrownByEnemy);
@@ -111,7 +108,6 @@ public class BombController : MonoBehaviour
 
     private void ControllBombDisplacementProgress()
     {
-        // if (startMoving || travelBack)
         if (bombState == BombState.FlyingToPlayer || bombState == BombState.FlyingToEnemy)
         {
             distanceTraveled = bombSpeed * (Time.time - timeWhenWasThrown);
@@ -121,8 +117,6 @@ public class BombController : MonoBehaviour
             if (percentualDistanceTravaled >= 1f)
             {
                 myCollider.enabled = true;
-                // startMoving = false;
-                // travelBack = false;
                 bombAnimationController.PrepareDetonation();
                 ResetArcProgress();
 
@@ -142,7 +136,6 @@ public class BombController : MonoBehaviour
     private void ThrowAgainstPlayer()
     {
         // This is initiated when the cat throw the bomb towards the player
-        // if (startMoving)
         if (bombState == BombState.FlyingToPlayer)
         {
             Vector2 currentPosition = Vector2.Lerp(positionWhenThrownByEnemy, positionWhenLanded, percentualDistanceTravaled);
@@ -153,7 +146,6 @@ public class BombController : MonoBehaviour
     public void ThrowAgainstCaster()
     {
         // This is initiated when the player successfully hit the bomb from the bottom
-        // if (travelBack)
         if (bombState == BombState.FlyingToEnemy)
         {
             // Vector2 _positionWhenThrownByEnemyAdjusted = new Vector2(positionWhenThrownByEnemy.x, positionWhenThrownByEnemy.y - 0.5f);
@@ -165,7 +157,6 @@ public class BombController : MonoBehaviour
 
     private void PlayArcAnimation()
     {
-        // if (startMoving)
         if (bombState == BombState.FlyingToPlayer)
         {
             float arcStartPercent = (0.5f / maximumArcHight) * 0.5f;
@@ -174,7 +165,6 @@ public class BombController : MonoBehaviour
             Vector2 bombSpritePosition = new Vector2(0, hightIncrease);
             transform.GetChild(0).GetComponent<Transform>().transform.localPosition = bombSpritePosition;
         }
-        // else if (travelBack)
         else if (bombState == BombState.FlyingToEnemy)
         {
             var hightIncrease = Mathf.Sin(percentualDistanceTravaled * Mathf.PI) * maximumArcHight;
@@ -238,7 +228,7 @@ public class BombController : MonoBehaviour
         Collider2D[] enemyTarget = Physics2D.OverlapCircleAll(centeredPivotPoint, explosionRadius, LayerMask.GetMask("Enemy"));
         foreach (Collider2D target in enemyTarget)
         {
-            target.GetComponent<EnemyHealthController>().ChangeEnemyHealth(bombDamage);
+            target.GetComponent<ReddishCatHealthController>().ChangeEnemyHealth(bombDamage);
         }
     }
 

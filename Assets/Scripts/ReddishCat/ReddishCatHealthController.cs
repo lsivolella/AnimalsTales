@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyHealthController : MonoBehaviour
+public class ReddishCatHealthController : MonoBehaviour
 {
     [Header("Health")]
     [SerializeField] int maxHealth = 1;

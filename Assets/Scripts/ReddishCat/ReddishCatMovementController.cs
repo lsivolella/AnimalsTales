@@ -2,23 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMovementController : MonoBehaviour
+public class ReddishCatMovementController : MonoBehaviour
 {
-    // Serializes Parameters
+    // Serialized Parameters
     [Header("Movement")]
     [SerializeField] float movementSpeed = 1f;
 
     // Cached References
     Rigidbody2D myRigidbody;
-    Animator myAnimator;
+    Collider2D myCollider;
+    ReddishCatAnimationController reddishCatAnimationController;
+    ReddishCatHealthController reddishCatHealthController;
 
     // Cached Movement Variables
-    private Vector2 movementDirection; // The direction the enemy has to move towards (-1 is left);
-    //private bool canMove = true;
+    private Vector2 movementDirection; // The direction the enemy has to move towards (-1 is left/down);
     private bool canMove = true;
     private bool isMoving = true;
     private float durationOfMovement = 0.2f;
-    private float movementDurationMeter; // The distance the enemy has walked
+    private float movementDurationMeter; // The time the enemy has walked a certain direction
 
     // Properties
     public bool CanMove { get { return canMove; } set { canMove = value; } }
@@ -34,11 +35,18 @@ public class EnemyMovementController : MonoBehaviour
     private void GetAccessToComponents()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
-        myAnimator = GetComponentInChildren<Animator>();
+        myCollider = GetComponent<Collider2D>();
+        reddishCatAnimationController = GetComponentInChildren<ReddishCatAnimationController>();
+        reddishCatHealthController = GetComponent<ReddishCatHealthController>();
     }
 
     // Update is called once per frame
     void Update()
+    {
+        ControlMovement();
+    }
+
+    private void ControlMovement()
     {
         if (canMove)
         {
@@ -49,13 +57,13 @@ public class EnemyMovementController : MonoBehaviour
 
             if (isMoving)
             {
-                AnimateMovement();
+                reddishCatAnimationController.AnimateMovement(movementDirection);
                 movementDurationMeter += Time.deltaTime;
                 if (movementDurationMeter >= durationOfMovement)
                 {
                     isMoving = false;
                 }
-            } 
+            }
         }
     }
 
@@ -76,19 +84,14 @@ public class EnemyMovementController : MonoBehaviour
         movementDurationMeter = 0;
     }
 
-    private void AnimateMovement()
-    {
-        if (!Mathf.Approximately(movementDirection.x, 0.0f))
-        {
-            myAnimator.SetFloat("Look X", movementDirection.x);
-            myAnimator.SetFloat("Speed", movementDirection.magnitude);
-        }
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Objects") || collision.gameObject.CompareTag("Bomb"))
         {
+            if (collision.gameObject.CompareTag("Bomb") && reddishCatHealthController.IsInvincible)
+            {
+                Physics2D.IgnoreCollision(myCollider, collision.gameObject.GetComponent<Collider2D>(), true);
+            }
             MoveToOpositeDirection(collision.GetContact(0).normal);
         }
     }

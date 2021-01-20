@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpriteAnimation : MonoBehaviour
+public class ReddishCatAnimationController : MonoBehaviour
 {
     [Header("Bomb Attack")]
     [SerializeField] GameObject bombPrefab;
@@ -11,8 +11,8 @@ public class EnemySpriteAnimation : MonoBehaviour
 
 
     // Cached References
-    EnemyMovementController enemyMovementController;
-    EnemyCombatController enemyCombatController;
+    ReddishCatMovementController reddishCatMovementController;
+    ReddishCatCombatController reddishCatCombatController;
     Animator myAnimator;
     GameObject newBomb;
 
@@ -23,9 +23,9 @@ public class EnemySpriteAnimation : MonoBehaviour
 
     private void GetAccessToComponents()
     {
-        enemyMovementController = GetComponentInParent<EnemyMovementController>();
-        enemyCombatController = GetComponentInParent<EnemyCombatController>();
-        myAnimator = GetComponentInChildren<Animator>();
+        reddishCatMovementController = GetComponentInParent<ReddishCatMovementController>();
+        reddishCatCombatController = GetComponentInParent<ReddishCatCombatController>();
+        myAnimator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -34,18 +34,27 @@ public class EnemySpriteAnimation : MonoBehaviour
 
     }
 
+    public void AnimateMovement(Vector2 movementDirection)
+    {
+        if (!Mathf.Approximately(movementDirection.x, 0.0f))
+        {
+            myAnimator.SetFloat("Look X", movementDirection.x);
+            myAnimator.SetFloat("Speed", movementDirection.magnitude);
+        }
+    }
+
     public void PrepareBow()
     {
         myAnimator.SetTrigger("prepareBow");
-        enemyMovementController.CanMove = false;
-        enemyCombatController.IsAttacking = true;
+        reddishCatMovementController.CanMove = false;
+        reddishCatCombatController.IsAttacking = true;
     }
 
     public void PrepareBomb()
     {
         myAnimator.SetBool("pickBomb", true);
-        enemyMovementController.CanMove = false;
-        enemyCombatController.IsAttacking = true;
+        reddishCatMovementController.CanMove = false;
+        reddishCatCombatController.IsAttacking = true;
 
         Vector2 pickUpPosition = new Vector2(transform.position.x, transform.position.y - 0.35f); // pivot.y = 15.35f
         newBomb = Instantiate(bombPrefab, pickUpPosition, Quaternion.identity);
@@ -68,14 +77,14 @@ public class EnemySpriteAnimation : MonoBehaviour
         // TODO: fix this line after dealing with bomb arc
         // BombController newBomb = FindObjectOfType<BombController>();
         newBomb.GetComponent<BombController>().SetUpThrowAgainstPlayer();
-        enemyMovementController.CanMove = true;
-        enemyCombatController.IsAttacking = false;
+        reddishCatMovementController.CanMove = true;
+        reddishCatCombatController.IsAttacking = false;
     }
 
     private void ShootArrow()
     {
-        enemyMovementController.CanMove = true;
-        enemyCombatController.IsAttacking = false;
+        reddishCatMovementController.CanMove = true;
+        reddishCatCombatController.IsAttacking = false;
         Vector2 startPosition = new Vector2(transform.position.x, transform.position.y + 0.3f);
         Instantiate(arrowPrefab, startPosition, Quaternion.identity);
     }

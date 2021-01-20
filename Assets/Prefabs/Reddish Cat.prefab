@@ -205,12 +205,12 @@ GameObject:
   - component: {fileID: 6113062834944328254}
   - component: {fileID: 6113062834944328195}
   - component: {fileID: 6113062834944328192}
-  - component: {fileID: 1649577813}
-  - component: {fileID: 7872342912643047838}
+  - component: {fileID: 6365268946704764684}
+  - component: {fileID: 5077379668004666263}
+  - component: {fileID: 8487680616030095783}
   - component: {fileID: 1607347247}
-  - component: {fileID: 6883297899013339183}
   m_Layer: 9
-  m_Name: Redish Cat
+  m_Name: Reddish Cat
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -282,7 +282,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.38057357, y: 0.39880013}
   m_EdgeRadius: 0
---- !u!114 &1649577813
+--- !u!114 &6365268946704764684
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -294,7 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15e7409881feb9a4293bf9dde5846d74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7872342912643047838
+--- !u!114 &5077379668004666263
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -303,13 +303,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 6113062834944328255}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a0e810517a1f5c4e860fabc2a89161f, type: 3}
+  m_Script: {fileID: 11500000, guid: 51e9d7b525d9846419450666cc8421ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 1.5
+--- !u!114 &8487680616030095783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6113062834944328255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158955870b7c4b44c9b092d3891b3057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 5
   HealthBarUI: {fileID: 2608566929311523728}
   fullHealthBar: {fileID: 324037943}
-  invincibleCooldown: 2
+  invincibleCooldown: 0.4
   blinkSpeed: 0.03
   alphaFactor: 0
 --- !u!114 &1607347247
@@ -327,19 +340,6 @@ MonoBehaviour:
   attackCooldown: 0.4
   bombAttackProbability: 0.7
   passiveDamage: -1
---- !u!114 &6883297899013339183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6113062834944328255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3016bd641f3bb2b42bf44877988e1b80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 4
 --- !u!1 &6113062835691794138
 GameObject:
   m_ObjectHideFlags: 0
