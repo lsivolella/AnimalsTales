@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerHealthController : MonoBehaviour
 {
     [Header("Health")]
-    [SerializeField] HealhBarUI healthBar;
+    [SerializeField] HealthBarUI healthBar;
     [SerializeField] int maxHealth = 1;
     [Header("Invincibility")]
     [SerializeField] float invincibleCooldown = 1f;
@@ -111,7 +111,7 @@ public class PlayerHealthController : MonoBehaviour
             }
         }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        HealhBarUI.Instance.SetValue(currentHealth / (float)maxHealth);
+        HealthBarUI.Instance.SetValue(currentHealth / (float)maxHealth);
         //healthBar.SetValue(currentHealth / (float)maxHealth);
         if (currentHealth <= 0)
         {
@@ -121,17 +121,36 @@ public class PlayerHealthController : MonoBehaviour
 
     /// <summary>
     /// This method is responsible for handling other methods in the Standard Damage Routine.
-    /// The Standard Damage Routine includes: Health Penalty, Input Blockage and Knockback Displacement.
+    /// The Standard Damage Routine includes: Health Penalty, Input Blockage, Knockback Displacement and Screen Shake.
     /// </summary>
     /// <param name="damageAmount">The amount of damage the player will suffer.</param>
     /// /// <param name="playerPosition">The Vector2 position of the player when damage was dealt.</param>
     /// <param name="objectPosition">The Vector2 position of the object when damage was dealt.</param>
         public void StandardDamageRoutine(int damageAmount, Vector2 playerPosition, Vector2 objectPosition)
     {
-        // Damage Player
-        ChangeHealth(damageAmount);
-        // Knockback Player
-        playerCombatController.PlayKnockbackRoutine(playerPosition, objectPosition);
+        if (!isInvincible)
+        {
+            // Damage Player
+            ChangeHealth(damageAmount);
+            // Knockback Player
+            playerCombatController.PlayKnockbackRoutine(playerPosition, objectPosition);
+            // Camera Shake
+            CameraShake.Instance.CallShakeCoroutine(); 
+        }
+    }
+
+    /// <summary>
+    /// This method is responsible for handling other methods in the Static Damage Routine.
+    /// The Static Damage Routine includes: Health Penalty.
+    /// </summary>
+    /// <param name="damageAmount">The amount of damage the player will suffer.</param>
+    public void StaticDamageRoutine(int damageAmount)
+    {
+        if (!isInvincible)
+        {
+            // Damage Player
+            ChangeHealth(damageAmount);
+        }
     }
 
     private void PlayDeathRoutine()

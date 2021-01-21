@@ -243,6 +243,10 @@ MonoBehaviour:
   knockbackDuration: 0.3
   knockbackForce: 1
   shadowSprite: {fileID: 6113062835795135850}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  skinWidth: 0.1
 --- !u!114 &5966065619884413022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,7 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 0}
-  maxHealth: 100
+  maxHealth: 6
   invincibleCooldown: 0.5
   blinkSpeed: 0.03
   alphaFactor: 0
@@ -448,7 +452,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 786960933
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 71faf59bfbbd73c4e8ceaa4056f6a3b4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

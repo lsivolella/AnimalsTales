@@ -5,7 +5,7 @@ public class PersistentHarmfulObject : MonoBehaviour
     [Header("Passive Damage")]
     [SerializeField] int passiveDamage = -1;
 
-    public int GetPassiveDamage { get { return passiveDamage; } }
+    public int PassiveDamage { get { return passiveDamage; } }
 
     /*
     private void OnTriggerStay2D(Collider2D other)

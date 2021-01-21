@@ -9,6 +9,9 @@ TagManager:
   - NPC
   - Objects
   - Bomb
+  - Fragment
+  - LeftSideCollider
+  - RightSideCollider
   layers:
   - Default
   - TransparentFX
@@ -23,9 +26,9 @@ TagManager:
   - NPC
   - Bomb
   - Player
-  - 
-  - 
-  - 
+  - Walls
+  - YarnBall
+  - Arrow
   - 
   - 
   - 
