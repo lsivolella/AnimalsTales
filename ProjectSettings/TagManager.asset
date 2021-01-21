@@ -10,6 +10,8 @@ TagManager:
   - Objects
   - Bomb
   - Fragment
+  - LeftSideCollider
+  - RightSideCollider
   layers:
   - Default
   - TransparentFX

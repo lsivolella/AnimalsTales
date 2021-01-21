@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4145150679835218674}
   - component: {fileID: 7487693079762963787}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Yarn Ball Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,8 +172,6 @@ MonoBehaviour:
   yarnBallThrowingSpeed: 1
   minimumBombSpeed: 1
   maximumArcHight: 1
-  leftSideCollider: {fileID: 0}
-  rightSideCollider: {fileID: 0}
 --- !u!114 &1795611202306855327
 MonoBehaviour:
   m_ObjectHideFlags: 0

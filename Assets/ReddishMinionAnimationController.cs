@@ -15,6 +15,8 @@ public class ReddishMinionAnimationController : MonoBehaviour
     Animator myAnimator;
     GameObject yarnBall;
 
+    //public bool IsFacingRight { get; private set; }
+
     private void Awake()
     {
         GetAccessToComponents();
@@ -58,9 +60,14 @@ public class ReddishMinionAnimationController : MonoBehaviour
         reddishMinionMovementController.IsMoving = false;
         reddishMinionCombatController.IsAttacking = true;
 
-        Vector2 pickUpPosition = new Vector2(transform.position.x - 0.35f, transform.position.y + 0.15f);
-        yarnBall = Instantiate(yarnBallPrefab, pickUpPosition, Quaternion.identity);
+        Vector2 pickUpPosition;
+        if (isFacingRight)
+            pickUpPosition = new Vector2(transform.position.x + 0.35f, transform.position.y + 0.15f);
+        else
+            pickUpPosition = new Vector2(transform.position.x - 0.35f, transform.position.y + 0.15f);
 
+        yarnBall = Instantiate(yarnBallPrefab, pickUpPosition, Quaternion.identity);
+        yarnBall.GetComponent<YarnBallController>().DefineYarnBallOriginalDirection(isFacingRight);
     }
 
     private void LiftYarnBall()
@@ -68,7 +75,11 @@ public class ReddishMinionAnimationController : MonoBehaviour
         DefineSpriteDirection();
         myAnimator.SetBool("pickYarnBall", false);
         myAnimator.SetBool("liftYarnBall", true);
-        yarnBall.GetComponent<Rigidbody2D>().MovePosition(new Vector2(transform.position.x + 0.05f, transform.position.y + 0.58f));
+
+        if (isFacingRight)
+            yarnBall.GetComponent<Rigidbody2D>().MovePosition(new Vector2(transform.position.x - 0.05f, transform.position.y + 0.58f));
+        else
+            yarnBall.GetComponent<Rigidbody2D>().MovePosition(new Vector2(transform.position.x + 0.05f, transform.position.y + 0.58f));
     }
 
     private void ThrowYarnBall()
