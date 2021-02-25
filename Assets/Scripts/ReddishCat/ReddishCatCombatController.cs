@@ -78,11 +78,11 @@ public class ReddishCatCombatController : MonoBehaviour
 
     private void SelectRandomAttack()
     {
-        //float randomNumber = Random.Range(0f, 1f);
-        //if (randomNumber <= (1 - bombAttackProbability))
-        //    ShootArrow();
-        //else
-        //    ShootBomb();
+        float randomNumber = Random.Range(0f, 1f);
+        if (randomNumber <= (1 - bombAttackProbability))
+            ShootArrow();
+        else
+            ShootBomb();
         ShootBomb();
     }
 

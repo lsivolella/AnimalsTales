@@ -33,9 +33,9 @@ public class TimelineController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            StartTimeline();
-        }
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    StartTimeline();
+        //}
     }
 }

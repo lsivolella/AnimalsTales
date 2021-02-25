@@ -229,7 +229,6 @@ public class YarnBallController : MonoBehaviour
         {
             if (isFacingRight && yarnBallState == YarnBallState.GroundedAtPlayerArea)
             {
-                Debug.Log("My origin is on the left");
                 SetUpTravelBackToCaster();
             }
             else
@@ -240,7 +239,6 @@ public class YarnBallController : MonoBehaviour
         {
             if (!isFacingRight && yarnBallState == YarnBallState.GroundedAtPlayerArea)
             {
-                Debug.Log("My origin is on the right");
                 SetUpTravelBackToCaster();
             }
             else

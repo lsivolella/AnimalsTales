@@ -7,26 +7,56 @@ public class BattleTrigger : MonoBehaviour
     [SerializeField] GameObject boss;
     [SerializeField] List<GameObject> minions;
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        ActivateEnemies();
+        ActivateEnemies(collision);
     }
 
-    private void ActivateEnemies()
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        foreach (GameObject enemy in minions)
-        {
-            var minionCombatScript = enemy.GetComponent<ReddishMinionCombatController>();
-            if (minionCombatScript != null)
-                minionCombatScript.OnHold = false;
-        }
+        DeactivateEnemies(collision);
+    }
 
-        var bossCombatScript = boss.GetComponent<ReddishCatCombatController>();
-        var bossMovementScript = boss.GetComponent<ReddishCatMovementController>();
-        if (bossCombatScript != null && bossMovementScript != null)
+    private void ActivateEnemies(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
         {
-            bossCombatScript.OnHold = false;
-            bossMovementScript.GenerateRandomMovementVector();
+            foreach (GameObject enemy in minions)
+            {
+                var minionCombatScript = enemy.GetComponent<ReddishMinionCombatController>();
+                if (minionCombatScript != null)
+                    minionCombatScript.OnHold = false;
+            }
+
+            var bossCombatScript = boss.GetComponent<ReddishCatCombatController>();
+            var bossMovementScript = boss.GetComponent<ReddishCatMovementController>();
+            if (bossCombatScript != null && bossMovementScript != null)
+            {
+                bossCombatScript.OnHold = false;
+                bossMovementScript.GenerateRandomMovementVector();
+            }
+        }
+    }
+
+    private void DeactivateEnemies(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Deactivate");
+            foreach (GameObject enemy in minions)
+            {
+                var minionCombatScript = enemy.GetComponent<ReddishMinionCombatController>();
+                if (minionCombatScript != null)
+                    minionCombatScript.OnHold = true;
+            }
+
+            var bossCombatScript = boss.GetComponent<ReddishCatCombatController>();
+            var bossMovementScript = boss.GetComponent<ReddishCatMovementController>();
+            if (bossCombatScript != null && bossMovementScript != null)
+            {
+                bossCombatScript.OnHold = true;
+                bossMovementScript.GenerateRandomMovementVector();
+            }
         }
     }
 }

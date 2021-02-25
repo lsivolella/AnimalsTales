@@ -193,7 +193,6 @@ public class BombController : MonoBehaviour
                 // And define witch side should the padding be applied to
                 // Left Side > Bomb goes to the right (no need to change padding)
                 float centerPoint = (fightingArenaMaximumHorizontalPosition + fightingArenaMinimumHorizontalPosition) / 2f;
-                Debug.Log(centerPoint);
                 if (transform.position.x >= centerPoint)
                 {
                     // Right Side > Bomb goes to the left > Dominant Side

@@ -355,7 +355,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ba5f9a86c956cac44b0ab3319bc014f1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4864,7 +4864,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.42277062}
+  m_Offset: {x: 0.50183964, y: 2.658239}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -4875,7 +4875,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.15445876}
+  m_Size: {x: 6.200886, y: 4.625395}
   m_EdgeRadius: 0
 --- !u!4 &1209263882
 Transform:
@@ -5388,7 +5388,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ba5f9a86c956cac44b0ab3319bc014f1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18010,7 +18010,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1665999553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18987,12 +18987,12 @@ PrefabInstance:
     - target: {fileID: 6113062834944328254, guid: 3b8a0f65b9d4a264fa9551f4766e8c5d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.47
+      value: -0.57
       objectReference: {fileID: 0}
     - target: {fileID: 6113062834944328254, guid: 3b8a0f65b9d4a264fa9551f4766e8c5d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.64
+      value: 0.91
       objectReference: {fileID: 0}
     - target: {fileID: 6113062834944328254, guid: 3b8a0f65b9d4a264fa9551f4766e8c5d,
         type: 3}
@@ -20589,7 +20589,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2455216298475523615}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.00000023841858, y: -0.5000001, z: -10}
+  m_LocalPosition: {x: -0.00000029802322, y: 0.91, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2455216299152798534}
@@ -20657,7 +20657,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2455216299152798535}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.4700003, y: -1.1399999, z: 0}
+  m_LocalPosition: {x: -0.5699997, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2455216299719526022}
@@ -21370,7 +21370,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6778148771323496851
 Transform:
   m_ObjectHideFlags: 0
@@ -21932,9 +21932,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158955870b7c4b44c9b092d3891b3057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 1
   HealthBarUI: {fileID: 2608566928718876008}
   fullHealthBar: {fileID: 1044333519}
   invincibleCooldown: 0.4
   blinkSpeed: 0.03
   alphaFactor: 0
+  hat: {fileID: 6478567493133321351, guid: d7768c7b3d54dc64abaacee21e5cbdb5, type: 3}

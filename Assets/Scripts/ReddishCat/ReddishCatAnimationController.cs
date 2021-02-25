@@ -31,7 +31,16 @@ public class ReddishCatAnimationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ControlOnHoldState();
+    }
 
+    private void ControlOnHoldState()
+    {
+        if (reddishCatCombatController.OnHold)
+        {
+            myAnimator.SetFloat("Look X", 0f);
+            myAnimator.SetFloat("Speed", 0f);
+        }
     }
 
     public void AnimateMovement(Vector2 movementDirection)

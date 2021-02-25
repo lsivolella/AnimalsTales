@@ -12,6 +12,8 @@ public class ReddishCatHealthController : MonoBehaviour
     [SerializeField] float invincibleCooldown = 1f;
     [SerializeField] float blinkSpeed = 1f;
     [SerializeField] [Range(0, 1)] float alphaFactor;
+    [Header("Loot")]
+    [SerializeField] GameObject hat;
 
     // Cached References
     Rigidbody2D myRigidbody2D;
@@ -72,6 +74,7 @@ public class ReddishCatHealthController : MonoBehaviour
     {
         CheckInvincibilityState();
         StartCoroutine(BlinkSpriteDuringInvincibility());
+        KillCat();
     }
 
     private void CheckInvincibilityState()
@@ -115,6 +118,7 @@ public class ReddishCatHealthController : MonoBehaviour
         }
         if (currentHealth <= 0)
         {
+            DropHat();
             gameObject.SetActive(false);
         }
     }
@@ -131,10 +135,13 @@ public class ReddishCatHealthController : MonoBehaviour
         // TODO: UI square to indicate the player has the hat in his inventory
         // TODO: orange cat sprite with the hat
         // TODO: new dialogue when the hat is given to the orange cat and another one for after that
-        // TODO: scene transition when player hit trigger (to be created) taking player to the cave
-        // TODO: transition to the way back... redish cat recovers all energy and has new dialogues
         // TODO: make sure entering the cave after black cat is defeat wont spawn him again
-        // TODO: create a minion for the black cat that spawns randomly and attacks the player?
-        // TODO: create cave scene
+        Instantiate(hat, transform.position, Quaternion.identity);
+    }
+
+    private void KillCat()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+            ChangeEnemyHealth(-currentHealth);
     }
 }

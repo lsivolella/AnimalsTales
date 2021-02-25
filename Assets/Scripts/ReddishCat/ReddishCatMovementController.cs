@@ -52,6 +52,7 @@ public class ReddishCatMovementController : MonoBehaviour
     void Update()
     {
         ControlMovement();
+        ControlOnHoldState();
     }
 
     private void ControlMovement()
@@ -72,6 +73,15 @@ public class ReddishCatMovementController : MonoBehaviour
                     isMoving = false;
                 }
             }
+        }
+    }
+
+    private void ControlOnHoldState()
+    {
+        if (reddishCatCombatController.OnHold)
+        {
+            canMove = false;
+            isMoving = false;
         }
     }
 
