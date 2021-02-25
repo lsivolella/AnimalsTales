@@ -184,7 +184,5 @@ public class PlayerHealthController : MonoBehaviour
         playerMovementController.IsInputFrozen = true;
         myAnimator.SetTrigger("isDead");
         myRigidbody.constraints = RigidbodyConstraints2D.FreezePosition;
-        // TODO Open Dead player pop-up
-        // TODO Choose to relive in "sanctuary" or pay gold to revive in place
     }
 }

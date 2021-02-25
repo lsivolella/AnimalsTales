@@ -14,10 +14,12 @@ public class ReddishCatHealthController : MonoBehaviour
     [SerializeField] [Range(0, 1)] float alphaFactor;
     [Header("Loot")]
     [SerializeField] GameObject hat;
+    [Header("Minions")]
+    [SerializeField] List<GameObject> minions;
 
     // Cached References
-    Rigidbody2D myRigidbody2D;
     SpriteRenderer spriteRenderer;
+    Animator myAnimator;
 
     // Cached Health Variables
     public int GetCurrentHealth { get { return currentHealth; } }
@@ -57,6 +59,7 @@ public class ReddishCatHealthController : MonoBehaviour
     private void GetAccessToComponents()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        myAnimator = GetComponentInChildren<Animator>();
     }
 
     private void SetDefaultVariables()
@@ -119,7 +122,8 @@ public class ReddishCatHealthController : MonoBehaviour
         if (currentHealth <= 0)
         {
             DropHat();
-            gameObject.SetActive(false);
+            PlayDeathRoutine();
+            KillMinions();
         }
     }
 
@@ -137,6 +141,19 @@ public class ReddishCatHealthController : MonoBehaviour
         // TODO: new dialogue when the hat is given to the orange cat and another one for after that
         // TODO: make sure entering the cave after black cat is defeat wont spawn him again
         Instantiate(hat, transform.position, Quaternion.identity);
+    }
+
+    private void PlayDeathRoutine()
+    {
+        myAnimator.SetTrigger("isDead");
+    }
+
+    private void KillMinions()
+    {
+        foreach (GameObject minion in minions)
+        {
+            minion.GetComponentInChildren<ReddishMinionAnimationController>().PlayDeathRoutine();
+        }
     }
 
     private void KillCat()

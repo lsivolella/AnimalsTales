@@ -91,4 +91,9 @@ public class ReddishMinionAnimationController : MonoBehaviour
         yarnBall.GetComponent<YarnBallController>().SetpUpThrowAgainstPlayer();
         myAnimator.SetBool("throwYarnBall", false);
     }
+
+    public void PlayDeathRoutine()
+    {
+        myAnimator.SetTrigger("isDead");
+    }
 }

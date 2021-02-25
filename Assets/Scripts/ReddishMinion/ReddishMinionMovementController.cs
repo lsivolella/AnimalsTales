@@ -11,6 +11,7 @@ public class ReddishMinionMovementController : MonoBehaviour
     // Cached References
     Rigidbody2D myRigidbody;
     Collider2D myCollider;
+    Animator myAnimator;
     ReddishMinionAnimationController reddishMinionAnimationController;
     ReddishMinionCombatController reddishMinionCombatController;
 

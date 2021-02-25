@@ -10,7 +10,6 @@ public class ReddishMinionCombatController : MonoBehaviour
 
     // Cached References
     ReddishMinionAnimationController reddishMinionAnimationController;
-    Rigidbody2D myRigidbody;
 
     // Cached Attack Variables
     private bool canAttack;
@@ -33,7 +32,6 @@ public class ReddishMinionCombatController : MonoBehaviour
 
     private void GetAccessToComponents()
     {
-        myRigidbody = GetComponent<Rigidbody2D>();
         reddishMinionAnimationController = GetComponentInChildren<ReddishMinionAnimationController>();
     }
 

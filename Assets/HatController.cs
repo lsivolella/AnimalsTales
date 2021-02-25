@@ -48,7 +48,6 @@ public class HatController : MonoBehaviour
             displacementTimer += Time.deltaTime;
             displacementCompleted = displacementTimer / displacementDuration;
             Vector2 newPosition = Vector2.Lerp(initialPosition, finalPosition, displacementCompleted);
-            Debug.Log(newPosition);
             transform.position = newPosition;
 
 
