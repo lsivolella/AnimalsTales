@@ -6,6 +6,9 @@ using Cinemachine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] NoiseSettings noiseProfile;
+
+    // Cached References
+    GameObject playerGameObject;
     public static CameraController Instance { get; private set; }
     private CinemachineVirtualCamera cinemachineVirtualCamera;
     private CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin;
@@ -13,15 +16,25 @@ public class CameraController : MonoBehaviour
     private float shakeDuration = 0f;
     private float shakeTimer = 0f;
 
-
-
     private void Awake()
     {
         Instance = this;
+        GetAccessToComponents();
+        SetPlayerAsFollowTarget();
+    }
+
+    private void GetAccessToComponents()
+    {
         cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
         cinemachineBasicMultiChannelPerlin = cinemachineVirtualCamera.
             GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         cinemachineBasicMultiChannelPerlin.m_NoiseProfile = null;
+        playerGameObject = GameObject.FindGameObjectWithTag("Player");
+    }
+
+    private void SetPlayerAsFollowTarget()
+    {
+        cinemachineVirtualCamera.Follow = playerGameObject.transform;
     }
 
     public void CameraShake(float shakeIntensity, float timer)

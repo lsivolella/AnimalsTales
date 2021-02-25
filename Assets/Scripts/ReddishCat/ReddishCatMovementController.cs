@@ -13,11 +13,12 @@ public class ReddishCatMovementController : MonoBehaviour
     Collider2D myCollider;
     ReddishCatAnimationController reddishCatAnimationController;
     ReddishCatHealthController reddishCatHealthController;
+    ReddishCatCombatController reddishCatCombatController;
 
     // Cached Movement Variables
     private Vector2 movementDirection; // The direction the enemy has to move towards (-1 is left/down);
-    private bool canMove = true;
-    private bool isMoving = true;
+    private bool canMove;
+    private bool isMoving;
     private float durationOfMovement = 0.2f;
     private float movementDurationMeter; // The time the enemy has walked a certain direction
 
@@ -29,7 +30,7 @@ public class ReddishCatMovementController : MonoBehaviour
     private void Awake()
     {
         GetAccessToComponents();
-        GenerateRandomMovementVector();
+        SetDefaultVariables();
     }
 
     private void GetAccessToComponents()
@@ -38,6 +39,13 @@ public class ReddishCatMovementController : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         reddishCatAnimationController = GetComponentInChildren<ReddishCatAnimationController>();
         reddishCatHealthController = GetComponent<ReddishCatHealthController>();
+        reddishCatCombatController = GetComponent<ReddishCatCombatController>();
+    }
+
+    private void SetDefaultVariables()
+    {
+        canMove = false;
+        isMoving = false;
     }
 
     // Update is called once per frame
@@ -48,7 +56,7 @@ public class ReddishCatMovementController : MonoBehaviour
 
     private void ControlMovement()
     {
-        if (canMove)
+        if (canMove && !SceneController.instance.CinematicsOn && !reddishCatCombatController.OnHold)
         {
             if (!isMoving)
             {
@@ -67,12 +75,13 @@ public class ReddishCatMovementController : MonoBehaviour
         }
     }
 
-    private void GenerateRandomMovementVector()
+    public void GenerateRandomMovementVector()
     {
         // Picks a random direction for the Enemy to move towards
         movementDirection = new Vector2(Random.Range(-1f, 1f), 0f).normalized;
         // Resets any residual velocity
-        myRigidbody.velocity = Vector2.zero; 
+        myRigidbody.velocity = Vector2.zero;
+        canMove = true;
         isMoving = true;
         movementDurationMeter = 0;
     }
@@ -103,7 +112,7 @@ public class ReddishCatMovementController : MonoBehaviour
 
     private void MoveEnemy()
     {
-        if (canMove)
+        if (canMove && !SceneController.instance.CinematicsOn && !reddishCatCombatController.OnHold)
         {
             if (isMoving)
             {

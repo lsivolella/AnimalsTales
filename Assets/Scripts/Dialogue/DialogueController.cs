@@ -10,6 +10,7 @@ public class DialogueController : MonoBehaviour
 
     private TextMeshProUGUI dialogueHeader;
     private TextMeshProUGUI dialogueBody;
+    private GameObject interlocutor;
 
     // Queue is a type of list that operates by FIFO (First In First Out)
     private Queue<string> sentences;
@@ -23,13 +24,14 @@ public class DialogueController : MonoBehaviour
         sentences = new Queue<string>();
     }
 
-    public void StartDialogue(DialogueContainer dialogue, TextMeshProUGUI header, TextMeshProUGUI body)
+    public void StartDialogue(DialogueContainer dialogue, TextMeshProUGUI header, TextMeshProUGUI body, GameObject interlocutor)
     {
         sentences.Clear();
         isConversationActive = true;
         dialogueHeader = header;
         dialogueHeader.text = dialogue.name;
         dialogueBody = body;
+        this.interlocutor = interlocutor;
 
         foreach (string sentence in dialogue.sentences)
         {
@@ -66,7 +68,7 @@ public class DialogueController : MonoBehaviour
     private void EndDialogue()
     {
         isConversationActive = false;
-        playerMovementController.FinishInteractionWithNpcs();
+        playerMovementController.FinishInteractionWithNpcs(interlocutor);
     }
 
     private void ClearDialogueBox()

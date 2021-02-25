@@ -11,7 +11,6 @@ public class NpcDialogueTrigger : MonoBehaviour
     [SerializeField] Animator dialogueAnimator;
     [SerializeField] DialogueContainer dialogueContainer;
 
-
     DialogueController dialogueController;
 
     private void Awake()
@@ -28,12 +27,14 @@ public class NpcDialogueTrigger : MonoBehaviour
     {
         headerText.text = null;
         bodyText.text = null;
+        DisplayDialogue();
         Invoke("CallStartDialogue", 0.3f);
+
     }
 
     private void CallStartDialogue()
     {
-        dialogueController.StartDialogue(dialogueContainer, headerText, bodyText);
+        dialogueController.StartDialogue(dialogueContainer, headerText, bodyText, this.gameObject);
     }
 
 

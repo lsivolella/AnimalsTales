@@ -2,37 +2,62 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class SceneController : MonoBehaviour
 {
-    SceneController[] sceneController;
+    public static SceneController instance { get; private set; }
 
-    private int currentScene;
-        
+    [SerializeField] Camera mainCamera;
+    [SerializeField] CinemachineVirtualCamera virtualCamera;
+    [SerializeField] Vector2 townSpawnPoint;
+    [SerializeField] Vector2 caveSpawnPoint;
+
+    GameObject playerGameObject;
+    private static bool firstTimePlayed = true;
+    private static bool cinematicsOn = false;
+    private static bool cinematicsPlayed = false;
+
+    public bool CinematicsOn { get { return cinematicsOn; } set { cinematicsOn = value; } }
+    public bool CinematicsPlayed { get {return cinematicsPlayed; } set {cinematicsPlayed = value; } }
+
+    //private GameObject playerGameObject;
+    private string activeSceneName;
+
     private void Awake()
     {
         SetUpSingleton();
-        GetCurrentScene();
     }
 
     private void SetUpSingleton()
     {
-        sceneController = FindObjectsOfType<SceneController>();
-
-        if (sceneController.Length > 1)
+        if (instance == null)
         {
-            gameObject.SetActive(false);
-            Destroy(gameObject);
+            instance = this;
+            DontDestroyOnLoad(instance.gameObject);
         }
-        else
-        {
-            DontDestroyOnLoad(gameObject);
-        }
+        else if (instance != null)
+            Destroy(instance.gameObject);
     }
 
-    private void GetCurrentScene()
+    private void OnEnable()
     {
-        currentScene = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        GetActiveScene();
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void GetActiveScene()
+    {
+        activeSceneName = SceneManager.GetActiveScene().name;
     }
 
     public void LoadCaveScene()
@@ -45,5 +70,24 @@ public class SceneController : MonoBehaviour
         SceneManager.LoadScene("TownScene");
     }
 
-    // TODO: fix the place where the player is spawned when he exits the cave scene and enter the town scene
+    public void ActivateVituralCamera2()
+    {
+        Debug.Log("Activate VCAM 2");
+
+    }
+
+    public void StartBlackCatDialogue()
+    {
+        Debug.Log("Black Cat Dialogue");
+    }
+
+    public void StartCinematics()
+    {
+        cinematicsOn = true;
+    }
+
+    public void TerminateCinamatics()
+    {
+        cinematicsOn = false;
+    }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
 {
-    // Serializes Parameters
+    // Serialized Parameters
     [Header("Movement")]
     [SerializeField] int movementSpeed = 1;
     [SerializeField] float freezeInputCooldown = 1f;
@@ -55,11 +55,13 @@ public class PlayerMovementController : MonoBehaviour
 
     void Update()
     {
-        if (!isInputFrozen && !isEngagedInConversation)
+        if (!isInputFrozen && !isEngagedInConversation && !SceneController.instance.CinematicsOn)
         {
             GetMovementInput();
             ProcessPlayerAnimations();
         }
+        if (SceneController.instance.CinematicsOn)
+            isEngagedInConversation = true;
         InteractWithNpcs();
     }
 
@@ -105,9 +107,8 @@ public class PlayerMovementController : MonoBehaviour
                 isEngagedInConversation = true;
                 npcDialogueTrigger = npcRaycastHit.collider.gameObject.
                     GetComponent<NpcDialogueTrigger>();
-                npcDialogueTrigger.DisplayDialogue();
                 npcDialogueTrigger.TriggerDialogue();
-                
+
             }
         }
         else if (Input.GetKeyDown(KeyCode.Comma) && dialogueController.IsConversationActive)
@@ -123,10 +124,18 @@ public class PlayerMovementController : MonoBehaviour
         return _raycastHit2D;
     }
 
-    public void FinishInteractionWithNpcs()
+    public void FinishInteractionWithNpcs(GameObject interlocutor)
     {
-        isEngagedInConversation = false;
-        npcDialogueTrigger.HideDialogue();
+        if (!SceneController.instance.CinematicsOn)
+        {
+            isEngagedInConversation = false;
+            npcDialogueTrigger.HideDialogue();
+        }
+        else if (SceneController.instance.CinematicsOn)
+        {
+            interlocutor.GetComponent<NpcDialogueTrigger>().HideDialogue();
+            FindObjectOfType<TimelineController>().StartTimeline();
+        }
     }
 
     private void FixedUpdate()
@@ -168,5 +177,10 @@ public class PlayerMovementController : MonoBehaviour
         // Unfreeze input
         isInputFrozen = false;
         Time.timeScale = 1f;
+    }
+
+    public void ResumeFromCinematics()
+    {
+        isEngagedInConversation = false;
     }
 }

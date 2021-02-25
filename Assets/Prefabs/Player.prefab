@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 6113062834944328193}
   - component: {fileID: 6113062835003219235}
   - component: {fileID: 5966065619884413022}
+  - component: {fileID: 1408234120}
   m_Layer: 12
   m_Name: Player
   m_TagString: Player
@@ -264,6 +265,23 @@ MonoBehaviour:
   invincibleCooldown: 0.5
   blinkSpeed: 0.03
   alphaFactor: 0
+--- !u!114 &1408234120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6113062834944328255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef37998ed5ae43044a1f717490776124, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPoints:
+  - name: TownToCave
+    coordinates: {x: -1.5, y: -5.25}
+  - name: CaveToTown
+    coordinates: {x: 5.5, y: 10.8}
 --- !u!1 &6113062835691794138
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,6 +334,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -429,6 +448,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

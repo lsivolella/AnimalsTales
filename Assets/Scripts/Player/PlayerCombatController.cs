@@ -80,7 +80,7 @@ public class PlayerCombatController : MonoBehaviour
 
     private void GetAttackInput()
     {
-        if (!playerMovementController.IsInputFrozen && !playerMovementController.IsEngagedInConversation)
+        if (!playerMovementController.IsInputFrozen && !playerMovementController.IsEngagedInConversation && !SceneController.instance.CinematicsOn)
         {
             if (scratchCooldownTimer <= 0)
             {
@@ -145,7 +145,7 @@ public class PlayerCombatController : MonoBehaviour
             playerMovementController.CallFreezeInputCoroutine();
 
             // Call CameraShake
-            CameraShake.Instance.CallShakeCoroutine();
+            CameraShake.instance.CallShakeCoroutine();
         }
 
         Collider2D[] bombTargets = Physics2D.OverlapCircleAll(scratchUpPivot.position, attackRange, LayerMask.GetMask("Bomb"));
@@ -227,8 +227,8 @@ public class PlayerCombatController : MonoBehaviour
             playerMovementController.CallFreezeInputCoroutine();
             // Define Direction of Displacement Vector2
             knockbackStartPosition = playerPosition;
-            Vector2 _directionOfKnockback = playerPosition - objectPosition;
-            knockbackEndPosition = playerPosition + (_directionOfKnockback.normalized * knockbackForce);
+            Vector2 directionOfKnockback = playerPosition - objectPosition;
+            knockbackEndPosition = playerPosition + (directionOfKnockback.normalized * knockbackForce);
             knockbackEndPosition = CrossingWallPrevention();
             // Initialize knockback timer
             timeKnockbackStarted = Time.time;
@@ -293,13 +293,13 @@ public class PlayerCombatController : MonoBehaviour
         }
 
 
-        Debug.Log("Bounds: " + myCollider.bounds.center.ToString("f3"));
-        Debug.Log("Extents: " + myCollider.bounds.extents.ToString("f3"));
-        Debug.Log("Origin" + knockbackStartPosition.ToString("f3"));
-        Debug.Log("Destination" + knockbackEndPosition.ToString("f3"));
-        Debug.Log("Contact Point:" + linecast.point.ToString("f3"));
-        Debug.Log("New Knockback End Position: " + newKnockbackEndPosition.ToString("f3"));
-        Debug.Log("Knockback Direction: " + (knockbackEndPosition - knockbackStartPosition).normalized.ToString("f3"));
+        //Debug.Log("Bounds: " + myCollider.bounds.center.ToString("f3"));
+        //Debug.Log("Extents: " + myCollider.bounds.extents.ToString("f3"));
+        //Debug.Log("Origin" + knockbackStartPosition.ToString("f3"));
+        //Debug.Log("Destination" + knockbackEndPosition.ToString("f3"));
+        //Debug.Log("Contact Point:" + linecast.point.ToString("f3"));
+        //Debug.Log("New Knockback End Position: " + newKnockbackEndPosition.ToString("f3"));
+        //Debug.Log("Knockback Direction: " + (knockbackEndPosition - knockbackStartPosition).normalized.ToString("f3"));
 
 
         return newKnockbackEndPosition;

@@ -12,6 +12,7 @@ public class ReddishMinionMovementController : MonoBehaviour
     Rigidbody2D myRigidbody;
     Collider2D myCollider;
     ReddishMinionAnimationController reddishMinionAnimationController;
+    ReddishMinionCombatController reddishMinionCombatController;
 
     // Cached Movement Variables
     private Vector2 movementDirection; // The direction the enemy has to move towards (-1 is left/down);
@@ -46,6 +47,7 @@ public class ReddishMinionMovementController : MonoBehaviour
         myRigidbody = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<Collider2D>();
         reddishMinionAnimationController = GetComponentInChildren<ReddishMinionAnimationController>();
+        reddishMinionCombatController = GetComponentInChildren<ReddishMinionCombatController>();
     }
 
     // Update is called once per frame
@@ -56,7 +58,7 @@ public class ReddishMinionMovementController : MonoBehaviour
 
     private void ControlMovement()
     {
-        if (canMove)
+        if (canMove && !SceneController.instance.CinematicsOn && !reddishMinionCombatController.OnHold)
         {
             if (!isMoving)
             {
@@ -107,7 +109,7 @@ public class ReddishMinionMovementController : MonoBehaviour
 
     private void MoveEnemy()
     {
-        if (canMove)
+        if (canMove && !SceneController.instance.CinematicsOn && !reddishMinionCombatController.OnHold)
         {
             if (isMoving)
             {

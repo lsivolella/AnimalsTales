@@ -17,8 +17,12 @@ public class ReddishMinionCombatController : MonoBehaviour
     private bool isAttacking;
     private float attackCooldownTimer;
 
+    // Cached General Variables
+    private bool onHold;
+
     // Properties
     public bool IsAttacking { get { return isAttacking; } set { isAttacking = value; } }
+    public bool OnHold { get { return onHold; } set { onHold = value; } }
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +39,7 @@ public class ReddishMinionCombatController : MonoBehaviour
 
     private void SetUpVariables()
     {
+        onHold = true;
         canAttack = false;
         isAttacking = false;
         attackCooldownTimer = attackCooldown;
@@ -48,7 +53,7 @@ public class ReddishMinionCombatController : MonoBehaviour
 
     private void HandleAttackCooldown()
     {
-        if (!isAttacking)
+        if (!isAttacking && !SceneController.instance.CinematicsOn && !onHold)
         {
             if (attackCooldownTimer <= 0)
             {

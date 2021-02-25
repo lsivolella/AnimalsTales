@@ -7,7 +7,7 @@ public class ReddishCatCombatController : MonoBehaviour
     // Serialized Parameters
     [Header("Attack")]
     [SerializeField] float attackCooldown = 1f;
-    [SerializeField] [Range (0, 1)] float bombAttackProbability = 1f;
+    [SerializeField] [Range(0, 1)] float bombAttackProbability = 1f;
     [Header("Passive Damage")]
     [SerializeField] int passiveDamage = -1;    // Damage dealt is always negative (positive for Healing)
 
@@ -21,16 +21,21 @@ public class ReddishCatCombatController : MonoBehaviour
     private bool isAttacking;
     private float attackCooldownTimer;
 
+    // Cached General Variables
+    private bool onHold;
+
 
     // Properties
     public int PassiveDamage { get { return passiveDamage; } }
+    public bool CanAttack { get { return canAttack; } set { canAttack = value; } }
     public bool IsAttacking { get { return isAttacking; } set { isAttacking = value; } }
+    public bool OnHold { get { return onHold; } set { onHold = value; } }
 
 
     private void Awake()
     {
         GetAccessToComponents();
-        SetUpVariables();
+        SetUpDefaultVariables();
     }
 
     private void GetAccessToComponents()
@@ -40,8 +45,9 @@ public class ReddishCatCombatController : MonoBehaviour
         reddishMinionAnimationController = GetComponentInChildren<ReddishCatAnimationController>();
     }
 
-    private void SetUpVariables()
+    private void SetUpDefaultVariables()
     {
+        onHold = true;
         canAttack = false;
         isAttacking = false;
         attackCooldownTimer = attackCooldown;
@@ -55,7 +61,7 @@ public class ReddishCatCombatController : MonoBehaviour
 
     private void HandleAttackCooldown()
     {
-        if (!isAttacking)
+        if (!isAttacking && !SceneController.instance.CinematicsOn && !onHold)
         {
             if (attackCooldownTimer <= 0)
             {
@@ -66,17 +72,18 @@ public class ReddishCatCombatController : MonoBehaviour
             {
                 canAttack = false;
                 attackCooldownTimer -= Time.deltaTime;
-            } 
+            }
         }
     }
 
     private void SelectRandomAttack()
     {
-        float randomNumber = Random.Range(0f, 1f);
-        if (randomNumber <= (1 - bombAttackProbability))
-            ShootArrow();
-        else
-            ShootBomb();
+        //float randomNumber = Random.Range(0f, 1f);
+        //if (randomNumber <= (1 - bombAttackProbability))
+        //    ShootArrow();
+        //else
+        //    ShootBomb();
+        ShootBomb();
     }
 
     private void ShootArrow()
@@ -93,7 +100,7 @@ public class ReddishCatCombatController : MonoBehaviour
         if (canAttack && !isAttacking && !reddishCatHealthController.IsInvincible)
         {
             reddishMinionAnimationController.PrepareBomb();
-            attackCooldownTimer = attackCooldown; 
+            attackCooldownTimer = attackCooldown;
         }
     }
 

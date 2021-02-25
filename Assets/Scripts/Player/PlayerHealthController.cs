@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerHealthController : MonoBehaviour
 {
+    public static PlayerHealthController instance;
+
     [Header("Health")]
     [SerializeField] HealthBarUI healthBar;
     [SerializeField] int maxHealth = 1;
@@ -13,16 +15,18 @@ public class PlayerHealthController : MonoBehaviour
     [SerializeField] [Range(0, 1)] float alphaFactor;
 
     // Cached References
-    Rigidbody2D myRigidbody;
-    Animator myAnimator;
+    PlayerSpawnController playerSpawnController;
     PlayerMovementController playerMovementController;
     PlayerCombatController playerCombatController;
+    Rigidbody2D myRigidbody;
+    Animator myAnimator;
     SpriteRenderer spriteRenderer;
 
     // Cached Health Variables
     public int GetCurrentHealth { get { return currentHealth; } }
     public int GetMaxHealth { get { return maxHealth; } }
-    private int currentHealth;
+    private static int currentHealth;
+    private static bool firstTimePlayed = true;
 
     // Cached Invincibility Variables
     private float invincibleCooldownTimer;
@@ -33,24 +37,37 @@ public class PlayerHealthController : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
+        SetUpSingleton();
         GetAccessToComponents();
         SetPlayerHealth();
         SetDefaultBoolStates();
         GetOriginalSpriteColor();
     }
 
+    private void SetUpSingleton()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(instance.gameObject);
+    }
+
     private void GetAccessToComponents()
     {
-        myRigidbody = GetComponent<Rigidbody2D>();
-        myAnimator = GetComponentInChildren<Animator>();
+        playerSpawnController = GetComponent<PlayerSpawnController>();
         playerMovementController = GetComponent<PlayerMovementController>();
         playerCombatController = GetComponent<PlayerCombatController>();
+        myRigidbody = GetComponent<Rigidbody2D>();
+        myAnimator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void SetPlayerHealth()
     {
-        currentHealth = maxHealth;
+        if (firstTimePlayed)
+            currentHealth = maxHealth;
+        firstTimePlayed = false;
+
     }
 
     private void SetDefaultBoolStates()
@@ -61,6 +78,16 @@ public class PlayerHealthController : MonoBehaviour
     private void GetOriginalSpriteColor()
     {
         originalColor = spriteRenderer.color;
+    }
+
+    private void Start()
+    {
+        UpdateHealthBarUI(); 
+    }
+
+    public void UpdateHealthBarUI()
+    {
+        HealthBarUI.instance.SetValue(currentHealth / (float)maxHealth);
     }
 
     // Update is called once per frame
@@ -111,8 +138,7 @@ public class PlayerHealthController : MonoBehaviour
             }
         }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        HealthBarUI.Instance.SetValue(currentHealth / (float)maxHealth);
-        //healthBar.SetValue(currentHealth / (float)maxHealth);
+        UpdateHealthBarUI();
         if (currentHealth <= 0)
         {
             PlayDeathRoutine();
@@ -135,7 +161,7 @@ public class PlayerHealthController : MonoBehaviour
             // Knockback Player
             playerCombatController.PlayKnockbackRoutine(playerPosition, objectPosition);
             // Camera Shake
-            CameraShake.Instance.CallShakeCoroutine(); 
+            CameraShake.instance.CallShakeCoroutine(); 
         }
     }
 
