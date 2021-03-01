@@ -51,7 +51,7 @@ public class ReddishMinionCombatController : MonoBehaviour
 
     private void HandleAttackCooldown()
     {
-        if (!isAttacking && !SceneController.instance.CinematicsOn && !onHold)
+        if (!isAttacking && !SceneController.instance.CinematicsOn && !onHold && GameMaster.instance.IsBossAlive)
         {
             if (attackCooldownTimer <= 0)
             {

@@ -10,7 +10,6 @@ public class ReddishMinionMovementController : MonoBehaviour
 
     // Cached References
     Rigidbody2D myRigidbody;
-    Collider2D myCollider;
     Animator myAnimator;
     ReddishMinionAnimationController reddishMinionAnimationController;
     ReddishMinionCombatController reddishMinionCombatController;
@@ -21,6 +20,7 @@ public class ReddishMinionMovementController : MonoBehaviour
     private bool isMoving;
     private float durationOfMovement = 0.2f;
     private float movementDurationMeter; // The time the enemy has walked a certain direction
+    private Vector2 deadBodyPosition;
 
     // Properties
     public bool CanMove { get { return canMove; } set { canMove = value; } }
@@ -31,24 +31,37 @@ public class ReddishMinionMovementController : MonoBehaviour
         GetAccessToComponents();
     }
 
+    private void GetAccessToComponents()
+    {
+        myRigidbody = GetComponent<Rigidbody2D>();
+        myAnimator = GetComponentInChildren<Animator>();
+        reddishMinionAnimationController = GetComponentInChildren<ReddishMinionAnimationController>();
+        reddishMinionCombatController = GetComponentInChildren<ReddishMinionCombatController>();
+    }
+
     private void Start()
     {
         SetDefaultVariables();
-        GenerateRandomMovementVector();
     }
 
     public void SetDefaultVariables()
     {
-        canMove = true;
-        isMoving = true;
-    }
+        if (!GameMaster.instance.HasMadeExchange)
+        {
+            canMove = true;
+            isMoving = false;
+        }
+        else if (GameMaster.instance.HasMadeExchange && !GameMaster.instance.IsBossAlive)
+        {
+            canMove = false ;
+            isMoving = false;
+            myAnimator.SetTrigger("beginDead");
 
-    private void GetAccessToComponents()
-    {
-        myRigidbody = GetComponent<Rigidbody2D>();
-        myCollider = GetComponent<Collider2D>();
-        reddishMinionAnimationController = GetComponentInChildren<ReddishMinionAnimationController>();
-        reddishMinionCombatController = GetComponentInChildren<ReddishMinionCombatController>();
+            if (reddishMinionAnimationController.IsFacingRight)
+                transform.position = GameMaster.instance.LeftMinionBodyPosotion;
+            else if (!reddishMinionAnimationController.IsFacingRight)
+                transform.position = GameMaster.instance.RightMinionBodyPosotion;
+        }
     }
 
     // Update is called once per frame
@@ -59,7 +72,7 @@ public class ReddishMinionMovementController : MonoBehaviour
 
     private void ControlMovement()
     {
-        if (canMove && !SceneController.instance.CinematicsOn && !reddishMinionCombatController.OnHold)
+        if (canMove && !SceneController.instance.CinematicsOn && !reddishMinionCombatController.OnHold && GameMaster.instance.IsBossAlive)
         {
             if (!isMoving)
             {
@@ -110,7 +123,7 @@ public class ReddishMinionMovementController : MonoBehaviour
 
     private void MoveEnemy()
     {
-        if (canMove && !SceneController.instance.CinematicsOn && !reddishMinionCombatController.OnHold)
+        if (canMove && !SceneController.instance.CinematicsOn && !reddishMinionCombatController.OnHold && GameMaster.instance.IsBossAlive)
         {
             if (isMoving)
             {
@@ -119,5 +132,13 @@ public class ReddishMinionMovementController : MonoBehaviour
                 myRigidbody.MovePosition(position);
             }
         }
+    }
+
+    public void StoreDeadBodyPosition()
+    {
+        if (reddishMinionAnimationController.IsFacingRight)
+            GameMaster.instance.LeftMinionBodyPosotion = transform.position;
+        else if (!reddishMinionAnimationController.IsFacingRight)
+            GameMaster.instance.RightMinionBodyPosotion = transform.position;
     }
 }

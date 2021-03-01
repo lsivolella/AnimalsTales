@@ -18,15 +18,16 @@ public class ReddishCatHealthController : MonoBehaviour
     [SerializeField] List<GameObject> minions;
 
     // Cached References
+    ReddishCatMovementController reddishCatMovementController;
     SpriteRenderer spriteRenderer;
     Animator myAnimator;
 
     // Cached Health Variables
-    public int GetCurrentHealth { get { return currentHealth; } }
-    public int GetMaxHealth { get { return maxHealth; } }
     private int currentHealth;
     private Vector3 healthBarScale;
     private float healthPercentage;
+    private bool isAlive;
+    public bool IsAlive { get { return isAlive; } }
 
     // Cached Invincibility Variables
     private float invincibleCooldownTimer;
@@ -34,15 +35,17 @@ public class ReddishCatHealthController : MonoBehaviour
     public bool IsInvincible { get { return isInvincible; } }
     private Color originalColor;
 
-
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        SetHealthBarUI();
-        SetEnemyHealth();
         GetAccessToComponents();
-        SetDefaultVariables();
-        GetOriginalSpriteColor();
+        SetHealthBarUI();
+    }
+
+    private void GetAccessToComponents()
+    {
+        reddishCatMovementController = GetComponent<ReddishCatMovementController>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        myAnimator = GetComponentInChildren<Animator>();
     }
 
     private void SetHealthBarUI()
@@ -51,20 +54,37 @@ public class ReddishCatHealthController : MonoBehaviour
         healthPercentage = healthBarScale.x / maxHealth;
     }
 
-    private void SetEnemyHealth()
+    // Start is called before the first frame update
+    void Start()
     {
-        currentHealth = maxHealth;
-    }
-
-    private void GetAccessToComponents()
-    {
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        myAnimator = GetComponentInChildren<Animator>();
+        SetDefaultVariables();
+        GetOriginalSpriteColor();
     }
 
     private void SetDefaultVariables()
     {
-        isInvincible = false;
+        if (!GameMaster.instance.HasMadeExchange)
+        {
+            currentHealth = maxHealth;
+            isInvincible = false;
+            isAlive = true;
+            GameMaster.instance.IsBossAlive = true;
+            GameMaster.instance.BossHealth = currentHealth;
+            GameMaster.instance.HasMadeExchange = true;
+        }
+        else if (GameMaster.instance.HasMadeExchange && GameMaster.instance.IsBossAlive)
+        {
+            currentHealth = GameMaster.instance.BossHealth;
+            UpdateHealthBarUI();
+            isAlive = true;
+        }
+        else if (GameMaster.instance.HasMadeExchange && !GameMaster.instance.IsBossAlive)
+        {
+            UpdateHealthBarUI();
+            isAlive = false;
+            myAnimator.SetTrigger("beginDead");
+            transform.position = GameMaster.instance.BossDeathPosition;
+        }
     }
 
     private void GetOriginalSpriteColor()
@@ -82,7 +102,7 @@ public class ReddishCatHealthController : MonoBehaviour
 
     private void CheckInvincibilityState()
     {
-        if (isInvincible)
+        if (isInvincible && isAlive)
         {
             invincibleCooldownTimer -= Time.deltaTime;
             if (invincibleCooldownTimer < 0)
@@ -94,7 +114,7 @@ public class ReddishCatHealthController : MonoBehaviour
 
     IEnumerator BlinkSpriteDuringInvincibility()
     {
-        if (isInvincible)
+        if (isInvincible && isAlive)
         {
             while (invincibleCooldownTimer > 0)
             {
@@ -108,22 +128,27 @@ public class ReddishCatHealthController : MonoBehaviour
 
     public void ChangeEnemyHealth(int amount)
     {
-        if (isInvincible)
+        if (isAlive)
         {
-            return;
-        }
-        else
-        {
-            isInvincible = true;
-            invincibleCooldownTimer = invincibleCooldown;
-            currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-            UpdateHealthBarUI();
-        }
-        if (currentHealth <= 0)
-        {
-            DropHat();
-            PlayDeathRoutine();
-            KillMinions();
+            if (isInvincible)
+            {
+                return;
+            }
+            else
+            {
+                isInvincible = true;
+                invincibleCooldownTimer = invincibleCooldown;
+                currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+                UpdateHealthBarUI();
+                GameMaster.instance.BossHealth = currentHealth;
+            }
+            if (currentHealth <= 0)
+            {
+                SetDeadState();
+                PlayDeathRoutine();
+                KillMinions();
+                Invoke("DropHat", 1f);
+            } 
         }
     }
 
@@ -131,6 +156,15 @@ public class ReddishCatHealthController : MonoBehaviour
     {
         healthBarScale.x = healthPercentage * currentHealth;
         fullHealthBar.localScale = healthBarScale;
+    }
+
+    private void SetDeadState()
+    {
+        isAlive = false;
+        GameMaster.instance.IsBossAlive = false;
+        GameMaster.instance.BossDeathPosition = transform.position;
+        reddishCatMovementController.CanMove = false;
+        reddishCatMovementController.IsMoving = false;
     }
 
     private void DropHat()
@@ -153,6 +187,7 @@ public class ReddishCatHealthController : MonoBehaviour
         foreach (GameObject minion in minions)
         {
             minion.GetComponentInChildren<ReddishMinionAnimationController>().PlayDeathRoutine();
+            minion.GetComponent<ReddishMinionMovementController>().StoreDeadBodyPosition();
         }
     }
 

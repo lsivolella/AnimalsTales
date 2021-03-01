@@ -15,6 +15,8 @@ public class ReddishMinionAnimationController : MonoBehaviour
     Animator myAnimator;
     GameObject yarnBall;
 
+    public bool IsFacingRight { get { return isFacingRight; }}
+
     //public bool IsFacingRight { get; private set; }
 
     private void Awake()
@@ -36,12 +38,6 @@ public class ReddishMinionAnimationController : MonoBehaviour
             myAnimator.SetFloat("Look Y", movementDirection.y);
             myAnimator.SetFloat("Speed", movementDirection.magnitude);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void DefineSpriteDirection()

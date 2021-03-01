@@ -24,13 +24,12 @@ public class ReddishCatMovementController : MonoBehaviour
 
     // Properties
     public bool CanMove { get { return canMove; } set { canMove = value; } }
-    public bool IsMoving { get { return isMoving; } set { isMoving = value;} }
+    public bool IsMoving { get { return isMoving; } set { isMoving = value; } }
 
 
     private void Awake()
     {
         GetAccessToComponents();
-        SetDefaultVariables();
     }
 
     private void GetAccessToComponents()
@@ -40,6 +39,11 @@ public class ReddishCatMovementController : MonoBehaviour
         reddishCatAnimationController = GetComponentInChildren<ReddishCatAnimationController>();
         reddishCatHealthController = GetComponent<ReddishCatHealthController>();
         reddishCatCombatController = GetComponent<ReddishCatCombatController>();
+    }
+
+    private void Start()
+    {
+        SetDefaultVariables();
     }
 
     private void SetDefaultVariables()
@@ -57,7 +61,7 @@ public class ReddishCatMovementController : MonoBehaviour
 
     private void ControlMovement()
     {
-        if (canMove && !SceneController.instance.CinematicsOn && !reddishCatCombatController.OnHold)
+        if (canMove && !SceneController.instance.CinematicsOn && !reddishCatCombatController.OnHold && reddishCatHealthController.IsAlive)
         {
             if (!isMoving)
             {
@@ -122,14 +126,14 @@ public class ReddishCatMovementController : MonoBehaviour
 
     private void MoveEnemy()
     {
-        if (canMove && !SceneController.instance.CinematicsOn && !reddishCatCombatController.OnHold)
+        if (canMove && !SceneController.instance.CinematicsOn && !reddishCatCombatController.OnHold && reddishCatHealthController.IsAlive)
         {
             if (isMoving)
             {
                 Vector2 position = myRigidbody.position;
                 position += movementDirection * movementSpeed * Time.fixedDeltaTime;
                 myRigidbody.MovePosition(position);
-            } 
+            }
         }
     }
 }

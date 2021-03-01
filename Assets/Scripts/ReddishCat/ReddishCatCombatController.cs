@@ -61,7 +61,7 @@ public class ReddishCatCombatController : MonoBehaviour
 
     private void HandleAttackCooldown()
     {
-        if (!isAttacking && !SceneController.instance.CinematicsOn && !onHold)
+        if (!isAttacking && !onHold && !SceneController.instance.CinematicsOn && GameMaster.instance.IsBossAlive)
         {
             if (attackCooldownTimer <= 0)
             {
