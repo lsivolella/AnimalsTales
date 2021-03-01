@@ -171,7 +171,7 @@ MonoBehaviour:
   rotationSpeed: 300
   yarnBallThrowingSpeed: 1
   maximumArcHight: 1
-  yarnBallFadeDuration: 2
+  yarnBallFadeDuration: 1.5
 --- !u!114 &1795611202306855327
 MonoBehaviour:
   m_ObjectHideFlags: 0

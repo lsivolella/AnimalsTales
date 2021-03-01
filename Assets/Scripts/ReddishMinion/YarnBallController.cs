@@ -84,8 +84,7 @@ public class YarnBallController : MonoBehaviour
             yarnBallFadeTimer -= Time.deltaTime;
 
             float alphaFactor = yarnBallFadeTimer / yarnBallFadeDuration;
-            Debug.Log("Fade Timer: " + yarnBallFadeTimer);
-            Debug.Log("Fade Duration: " + yarnBallFadeDuration);
+
             foreach (SpriteRenderer spriteRenderer in spriteRenderers)
             {
                 spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 1.0f * alphaFactor);
