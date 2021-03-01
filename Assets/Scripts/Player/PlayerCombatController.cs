@@ -18,7 +18,6 @@ public class PlayerCombatController : MonoBehaviour
     [SerializeField] float knockbackForce = 1f;
     [SerializeField] GameObject shadowSprite;
     [Header("Crossing Wall Prevention")]
-    [SerializeField] LayerMask layerMask = -1;
     [SerializeField] float skinWidth = 0.1f;
 
     // Cached References

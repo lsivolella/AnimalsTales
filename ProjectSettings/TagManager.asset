@@ -13,6 +13,7 @@ TagManager:
   - LeftSideCollider
   - RightSideCollider
   - TestObject
+  - Hat
   layers:
   - Default
   - TransparentFX

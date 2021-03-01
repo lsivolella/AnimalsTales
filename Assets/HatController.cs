@@ -64,7 +64,10 @@ public class HatController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        HatPickUp();
+        if (collision.CompareTag("Player"))
+        {
+            HatPickUp(); 
+        }
     }
 
     private void HatPickUp()

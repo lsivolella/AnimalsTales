@@ -13,9 +13,10 @@ public class PlayerHealthController : MonoBehaviour
     [SerializeField] float invincibleCooldown = 1f;
     [SerializeField] float blinkSpeed = 1f;
     [SerializeField] [Range(0, 1)] float alphaFactor;
+    [Header("Inventory")]
+    [SerializeField] InventoryController inventoryController; 
 
     // Cached References
-    PlayerSpawnController playerSpawnController;
     PlayerMovementController playerMovementController;
     PlayerCombatController playerCombatController;
     Rigidbody2D myRigidbody;
@@ -33,6 +34,9 @@ public class PlayerHealthController : MonoBehaviour
     public bool GetInvincibleStatus { get { return isInvincible; } }
     private bool isInvincible = false;
     private Color originalColor;
+
+    // Cached Inventory Variables
+    private static bool hasHat;
 
     // Start is called before the first frame update
     private void Awake()
@@ -54,7 +58,6 @@ public class PlayerHealthController : MonoBehaviour
 
     private void GetAccessToComponents()
     {
-        playerSpawnController = GetComponent<PlayerSpawnController>();
         playerMovementController = GetComponent<PlayerMovementController>();
         playerCombatController = GetComponent<PlayerCombatController>();
         myRigidbody = GetComponent<Rigidbody2D>();
@@ -73,6 +76,7 @@ public class PlayerHealthController : MonoBehaviour
     private void SetDefaultBoolStates()
     {
         isInvincible = false;
+        hasHat = false;
     }
 
     private void GetOriginalSpriteColor()
@@ -184,5 +188,14 @@ public class PlayerHealthController : MonoBehaviour
         playerMovementController.IsInputFrozen = true;
         myAnimator.SetTrigger("isDead");
         myRigidbody.constraints = RigidbodyConstraints2D.FreezePosition;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Hat"))
+        {
+            hasHat = true;
+            inventoryController.ActivateHat();
+        }
     }
 }
