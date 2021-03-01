@@ -63,4 +63,10 @@ public class BombAnimationController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(centeredPivotPoint, GetComponentInParent<BombController>().explosionRadius);
     }
+
+    public void InstantDetonation()
+    {
+        myAnimator.SetTrigger("instantDetonation");
+    }
+
 }

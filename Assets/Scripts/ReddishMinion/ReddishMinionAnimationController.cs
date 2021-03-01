@@ -91,5 +91,6 @@ public class ReddishMinionAnimationController : MonoBehaviour
     public void PlayDeathRoutine()
     {
         myAnimator.SetTrigger("isDead");
+        yarnBall.GetComponent<YarnBallController>().SetFadeAway();
     }
 }

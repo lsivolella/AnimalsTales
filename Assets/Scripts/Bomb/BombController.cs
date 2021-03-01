@@ -28,6 +28,7 @@ public class BombController : MonoBehaviour
     // Cached References
     BombAnimationController bombAnimationController;
     Rigidbody2D myRigidbody;
+    Animator myAnimator;
     RaycastHit2D searchForEnemyRaycast;
 
 
@@ -68,6 +69,17 @@ public class BombController : MonoBehaviour
         bombSpeed = minimumBombSpeed * randomlyPickedThrowDistance / minimumThrowDistance;
         // Set the Bomb initial state
         bombState = BombState.NotThrown;
+    }
+
+    private void Update()
+    {
+        CheckForBossStatus();
+    }
+
+    private void CheckForBossStatus()
+    {
+        if (!GameMaster.instance.IsBossAlive)
+            bombAnimationController.InstantDetonation();
     }
 
     public void SetUpThrowAgainstPlayer()

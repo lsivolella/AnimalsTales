@@ -10,6 +10,8 @@ public class YarnBallController : MonoBehaviour
     [Header("Arc Animation")]
     [SerializeField] float yarnBallThrowingSpeed = 1f;
     [SerializeField] float maximumArcHight = 1f;
+    [Header("SelfDestruction")]
+    [SerializeField] float yarnBallFadeDuration = 0.5f;
 
     // Cached enum
     public enum YarnBallState { NotThrown, FlyingToPlayer, GroundedAtPlayerArea, FlyingToEnemy, GroundedAtEnemyArea };
@@ -18,9 +20,7 @@ public class YarnBallController : MonoBehaviour
     // Cached References
     Rigidbody2D myRigidbody;
     Collider2D myCollider;
-
-    // Cached Variables
-    private float yarnBallRotationDirection;
+    SpriteRenderer[] spriteRenderers;
 
     // Cached Variables
     private Vector2 movementVector;
@@ -31,6 +31,8 @@ public class YarnBallController : MonoBehaviour
     private float distanceTraveled = 0f;
     private float percentualDistanceTravaled;
     private float yarnBallDirectionOfMovement;
+    private float yarnBallRotationDirection;
+    private float yarnBallFadeTimer;
     private bool isFacingRight;
 
     private void Awake()
@@ -42,6 +44,7 @@ public class YarnBallController : MonoBehaviour
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<Collider2D>();
+        spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
     }
 
     // Start is called before the first frame update
@@ -58,23 +61,38 @@ public class YarnBallController : MonoBehaviour
         yarnBallState = YarnBallState.NotThrown;
     }
 
-    public void DefineYarnBallOriginalDirection(bool isFacingRight)
+    private void Update()
     {
-        this.isFacingRight = isFacingRight;
+        ControlFading();
+    }
 
-        if (isFacingRight)
+    public void SetFadeAway()
+    {
+        yarnBallFadeTimer = yarnBallFadeDuration;
+        Invoke("SelfDestruct", yarnBallFadeDuration);
+    }
+
+    private void SelfDestruct()
+    {
+        Destroy(gameObject);
+    }
+
+    private void ControlFading()
+    {
+        if (yarnBallFadeTimer > 0)
         {
-            yarnBallDirectionOfMovement = 1;
-            yarnBallRotationDirection = -1;
-            movementVector = new Vector2(1, 0);
-        }
-        else
-        {
-            yarnBallDirectionOfMovement = -1;
-            yarnBallRotationDirection = 1;
-            movementVector = new Vector2(-1, 0);
+            yarnBallFadeTimer -= Time.deltaTime;
+
+            float alphaFactor = yarnBallFadeTimer / yarnBallFadeDuration;
+            Debug.Log("Fade Timer: " + yarnBallFadeTimer);
+            Debug.Log("Fade Duration: " + yarnBallFadeDuration);
+            foreach (SpriteRenderer spriteRenderer in spriteRenderers)
+            {
+                spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 1.0f * alphaFactor);
+            }
         }
     }
+
 
     private void FixedUpdate()
     {
@@ -111,6 +129,24 @@ public class YarnBallController : MonoBehaviour
         // Get a Time reference for the moment the action begun
         timeWhenWasThrown = Time.time;
         yarnBallState = YarnBallState.FlyingToPlayer;
+    }
+
+    public void DefineYarnBallOriginalDirection(bool isFacingRight)
+    {
+        this.isFacingRight = isFacingRight;
+
+        if (isFacingRight)
+        {
+            yarnBallDirectionOfMovement = 1;
+            yarnBallRotationDirection = -1;
+            movementVector = new Vector2(1, 0);
+        }
+        else
+        {
+            yarnBallDirectionOfMovement = -1;
+            yarnBallRotationDirection = 1;
+            movementVector = new Vector2(-1, 0);
+        }
     }
 
     private void ControllYarnBallDisplacementProgress()

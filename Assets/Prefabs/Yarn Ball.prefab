@@ -46,6 +46,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -166,12 +167,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf8fadd573c717841b17d3fd79f9e348, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementDirection: {x: 1, y: 0}
   ballSpeed: 1.5
   rotationSpeed: 300
   yarnBallThrowingSpeed: 1
-  minimumBombSpeed: 1
   maximumArcHight: 1
+  yarnBallFadeDuration: 2
 --- !u!114 &1795611202306855327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,6 +233,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

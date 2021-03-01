@@ -23,7 +23,7 @@ public class HealthBarUI : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(instance.gameObject);
         }
         else
             Destroy(instance.gameObject);
