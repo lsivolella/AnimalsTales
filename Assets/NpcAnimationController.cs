@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameMaster;
 
 public class NpcAnimationController : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class NpcAnimationController : MonoBehaviour
     private void Start()
     {
         GetAccessToComponents();
-        SetSpriteToDownPosition();
+        CheckHatStatus();
     }
 
     private void GetAccessToComponents()
@@ -19,15 +20,21 @@ public class NpcAnimationController : MonoBehaviour
         gameMaster = GameMaster.instance;
     }
 
-    private void SetSpriteToDownPosition()
+    private void CheckHatStatus()
     {
-        myAnimator.SetFloat("Look X", 0.0f);
-        myAnimator.SetFloat("Look Y", -1.0f);
+        if (gameMaster.hatStatus == HatStatus.Delivered)
+        {
+            myAnimator.SetBool("hatDelivered", true);
+            Debug.Log(gameMaster.hatStatus);
+        }
+        else
+            myAnimator.SetBool("hatDelivered", false);
     }
 
     public void DoHatDance()
     {
         myAnimator.SetTrigger("hatDance");
+        myAnimator.SetBool("hatDelivered", true);
     }
 
     private void Update()

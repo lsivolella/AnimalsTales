@@ -12,6 +12,8 @@ public class PlayerMovementController : MonoBehaviour
     [Header("Raycast")]
     [SerializeField] float raycastRange = 1f;
     [SerializeField] DialogueController dialogueController;
+    [Header("Inventory")]
+    [SerializeField] InventoryController inventoryController;
 
     // Cached References
     Rigidbody2D myRigidbody;
@@ -154,6 +156,7 @@ public class PlayerMovementController : MonoBehaviour
         {
             interlocutor.GetComponent<NpcAnimationController>().DoHatDance();
             gameMaster.hatStatus = HatStatus.Delivered;
+            inventoryController.DeactivateHat();
         }
     }
 

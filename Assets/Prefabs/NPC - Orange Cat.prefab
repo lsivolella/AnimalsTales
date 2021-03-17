@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 3484345581471881689}
   - component: {fileID: 3484345581471881688}
   - component: {fileID: 3484345581471881703}
+  - component: {fileID: 2038397364}
+  - component: {fileID: 2038397365}
   m_Layer: 10
   m_Name: NPC - Orange Cat
   m_TagString: NPC
@@ -143,12 +145,55 @@ MonoBehaviour:
   bodyText: {fileID: 3484345580620722658}
   dialogueAnimator: {fileID: 3484345580440446190}
   dialogueContainer:
+  - containerName: Chat#1 - Pre Fight
     name: Orange Cat
     sentences:
-    - Hello, Back Cat! It is nice to see you!
+    - Hello, Black Cat! It is nice to see you!
     - You see... The Reddish Cat band came around earlier and stole my hat...
-    - Could you retrieve it back to me? Please, be careful, those guys are not playing
+    - Could you retrieve it for me? Please, be careful, those guys are not playing
       around!
+  - containerName: Chat#2 - Post Fight, delivering hat
+    name: Orange Cat
+    sentences:
+    - Black Cat, you made it alive!
+    - Have you managed to defeat those bastards and retrieve my hat? Ha! Marvelous!
+    - Thank you very much, Black Cat. You are a savior!
+  - containerName: Chat#2 - Post Fight, hat delivered
+    name: Orange Cat
+    sentences:
+    - Are you still hanging around? There's not much to be done here. Go check out
+      Silk's other games!
+--- !u!95 &2038397364
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3484345581471881692}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8053004e5f3370b468af3ab572fd2fc4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2038397365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3484345581471881692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ff3a1d7c77fde94295f471a85f50412, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3484345581521017915
 GameObject:
   m_ObjectHideFlags: 0

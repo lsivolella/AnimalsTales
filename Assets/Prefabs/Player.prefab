@@ -221,6 +221,7 @@ MonoBehaviour:
   freezeInputCooldown: 0.3
   raycastRange: 0.5
   dialogueController: {fileID: 0}
+  inventoryController: {fileID: 0}
 --- !u!114 &6113062835003219235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,9 +245,6 @@ MonoBehaviour:
   knockbackDuration: 0.3
   knockbackForce: 1
   shadowSprite: {fileID: 6113062835795135850}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
   skinWidth: 0.1
 --- !u!114 &5966065619884413022
 MonoBehaviour:
@@ -265,6 +263,7 @@ MonoBehaviour:
   invincibleCooldown: 0.5
   blinkSpeed: 0.03
   alphaFactor: 0
+  inventoryController: {fileID: 0}
 --- !u!114 &1408234120
 MonoBehaviour:
   m_ObjectHideFlags: 0
