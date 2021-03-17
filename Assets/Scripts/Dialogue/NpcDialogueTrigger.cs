@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using static GameMaster;
 
 public class NpcDialogueTrigger : MonoBehaviour
 {
@@ -9,9 +10,11 @@ public class NpcDialogueTrigger : MonoBehaviour
     [SerializeField] TextMeshProUGUI headerText;
     [SerializeField] TextMeshProUGUI bodyText;
     [SerializeField] Animator dialogueAnimator;
-    [SerializeField] DialogueContainer dialogueContainer;
+    [SerializeField] DialogueContainer[] dialogueContainer;
 
     DialogueController dialogueController;
+    GameMaster gameMaster;
+
 
     private void Awake()
     {
@@ -21,6 +24,22 @@ public class NpcDialogueTrigger : MonoBehaviour
     private void GetAccessToComponents()
     {
         dialogueController = FindObjectOfType<DialogueController>();
+        gameMaster = GameMaster.instance;
+    }
+
+    private void Start()
+    {
+        SetStartVariables();
+    }
+
+    private void SetStartVariables()
+    {
+        // Access the GameMaster and check the Hat status
+        // If not in inventory: state = lostHat
+        // If in inventory: transition to foundHat during conversation. 
+        // This information must be passed to the GameMaster so that it will be persistent.
+        // The status change will be triggered by the player when he talks to the orange cat with the hat
+        // Remember to keep the Orange cat methods in thids script
     }
 
     public void TriggerDialogue()
@@ -34,7 +53,15 @@ public class NpcDialogueTrigger : MonoBehaviour
 
     private void CallStartDialogue()
     {
-        dialogueController.StartDialogue(dialogueContainer, headerText, bodyText, this.gameObject);
+        int dialogueToDisplay = 0;
+        if (gameMaster.hatStatus == HatStatus.NotDropped || gameMaster.hatStatus == HatStatus.AtFlor)
+            dialogueToDisplay = 0;
+        else if (gameMaster.hatStatus == HatStatus.Inventory)
+            dialogueToDisplay = 1;
+        else if (gameMaster.hatStatus == HatStatus.Delivered)
+            dialogueToDisplay = 2;
+
+        dialogueController.StartDialogue(dialogueContainer[dialogueToDisplay], headerText, bodyText, this.gameObject);
     }
 
 
@@ -55,4 +82,6 @@ public class NpcDialogueTrigger : MonoBehaviour
         dialogueBoxCanvas.SetActive(false);
         dialogueAnimator.SetBool("isOpen", false);
     }
+
+
 }

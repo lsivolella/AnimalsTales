@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameMaster;
 
 public class PlayerMovementController : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class PlayerMovementController : MonoBehaviour
     // Cached References
     Rigidbody2D myRigidbody;
     Animator myAnimator;
+    GameMaster gameMaster;
 
     // Cached Movement Variables
     private float horizontalInput;
@@ -44,6 +46,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponentInChildren<Animator>();
+        gameMaster = GameMaster.instance;
         //dialogueController = GetComponent<DialogueController>();
     }
 
@@ -63,6 +66,7 @@ public class PlayerMovementController : MonoBehaviour
         if (SceneController.instance.CinematicsOn)
             isEngagedInConversation = true;
         InteractWithNpcs();
+        PassPlayerPositionToGameMaster();
     }
 
     private void GetMovementInput()
@@ -117,6 +121,11 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
+    private void PassPlayerPositionToGameMaster()
+    {
+        gameMaster.PlayerPosition = transform.position;
+    }
+
     private RaycastHit2D CastDialogueRaycast()
     {
          RaycastHit2D _raycastHit2D = Physics2D.Raycast(myRigidbody.position + Vector2.up * 0.2f,
@@ -130,11 +139,21 @@ public class PlayerMovementController : MonoBehaviour
         {
             isEngagedInConversation = false;
             npcDialogueTrigger.HideDialogue();
+            DeliverHat(interlocutor);
         }
         else if (SceneController.instance.CinematicsOn)
         {
             interlocutor.GetComponent<NpcDialogueTrigger>().HideDialogue();
             FindObjectOfType<TimelineController>().StartTimeline();
+        }
+    }
+
+    private void DeliverHat(GameObject interlocutor)
+    {
+        if (interlocutor.name == "NPC - Orange Cat" && gameMaster.hatStatus == HatStatus.Inventory)
+        {
+            interlocutor.GetComponent<NpcAnimationController>().DoHatDance();
+            gameMaster.hatStatus = HatStatus.Delivered;
         }
     }
 

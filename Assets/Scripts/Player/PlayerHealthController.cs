@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameMaster;
 
 public class PlayerHealthController : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class PlayerHealthController : MonoBehaviour
     Rigidbody2D myRigidbody;
     Animator myAnimator;
     SpriteRenderer spriteRenderer;
+    GameMaster gameMaster;
 
     // Cached Health Variables
     public int GetCurrentHealth { get { return currentHealth; } }
@@ -35,16 +37,15 @@ public class PlayerHealthController : MonoBehaviour
     private bool isInvincible = false;
     private Color originalColor;
 
-    // Cached Inventory Variables
-    private static bool hasHat;
+    // Cached Inventory Variabless
 
     // Start is called before the first frame update
     private void Awake()
     {
         SetUpSingleton();
         GetAccessToComponents();
-        SetPlayerHealth();
-        SetDefaultBoolStates();
+        SetUpGameSessionVariables();
+        SetSceneLoadVariables();
         GetOriginalSpriteColor();
     }
 
@@ -63,20 +64,22 @@ public class PlayerHealthController : MonoBehaviour
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        gameMaster = GameMaster.instance;
     }
 
-    private void SetPlayerHealth()
+    private void SetUpGameSessionVariables()
     {
         if (firstTimePlayed)
+        {
             currentHealth = maxHealth;
+            gameMaster.hatStatus = HatStatus.NotDropped;
+        }
         firstTimePlayed = false;
-
     }
 
-    private void SetDefaultBoolStates()
+    private void SetSceneLoadVariables()
     {
         isInvincible = false;
-        hasHat = false;
     }
 
     private void GetOriginalSpriteColor()
@@ -194,7 +197,7 @@ public class PlayerHealthController : MonoBehaviour
     {
         if (collision.CompareTag("Hat"))
         {
-            hasHat = true;
+            gameMaster.hatStatus = HatStatus.Inventory;
             inventoryController.ActivateHat();
         }
     }

@@ -35668,8 +35668,142 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC - Orange Cat
       objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[0].sentences.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[1].sentences.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[2].sentences.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[0].name
+      value: Orange Cat
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[1].name
+      value: Orange Cat
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[0].containerName
+      value: Chat#1 - Pre Fight
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[1].containerName
+      value: Chat#2 - Post Fight, delivering hat
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[0].sentences.Array.data[0]
+      value: Hello, Black Cat! It is nice to see you!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[0].sentences.Array.data[1]
+      value: You see... The Reddish Cat band came around earlier and stole my hat...
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[0].sentences.Array.data[2]
+      value: Could you retrieve it for me? Please, be careful, those guys are not
+        playing around!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[1].sentences.Array.data[0]
+      value: Black Cat, you made it alive!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[1].sentences.Array.data[1]
+      value: Have you managed to defeat those bastards and retrieve my hat? Ha! Marvelous!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[1].sentences.Array.data[2]
+      value: Thank you very much, Black Cat. You are a savior!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[2].containerName
+      value: Chat#2 - Post Fight, hat delivered
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[2].name
+      value: Orange Cat
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[2].sentences.Array.data[0]
+      value: Are you still hanging around? There's not much to be done here. Go check
+        out Silk's other games!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[2].sentences.Array.data[1]
+      value: Have you managed to defeat those bastards and retrieve my hat? Ha! Marvelous!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484345581471881703, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+        type: 3}
+      propertyPath: dialogueContainer.Array.data[2].sentences.Array.data[2]
+      value: Thank you very much, Black Cat. You are a savior!
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 870e2f08f2531ac42b32c4a31e8b3671, type: 3}
+--- !u!1 &2038397363 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3484345581471881692, guid: 870e2f08f2531ac42b32c4a31e8b3671,
+    type: 3}
+  m_PrefabInstance: {fileID: 1974757312}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2038397364
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2038397363}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8053004e5f3370b468af3ab572fd2fc4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2038397365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2038397363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ff3a1d7c77fde94295f471a85f50412, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!850595691 &2077394454
 LightingSettings:
   m_ObjectHideFlags: 0
