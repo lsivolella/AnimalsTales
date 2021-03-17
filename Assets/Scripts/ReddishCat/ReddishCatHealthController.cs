@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameMaster;
 
 public class ReddishCatHealthController : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class ReddishCatHealthController : MonoBehaviour
     ReddishCatMovementController reddishCatMovementController;
     SpriteRenderer spriteRenderer;
     Animator myAnimator;
+    GameMaster gameMaster;
 
     // Cached Health Variables
     private int currentHealth;
@@ -46,6 +48,7 @@ public class ReddishCatHealthController : MonoBehaviour
         reddishCatMovementController = GetComponent<ReddishCatMovementController>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         myAnimator = GetComponentInChildren<Animator>();
+        gameMaster = GameMaster.instance;
     }
 
     private void SetHealthBarUI()
@@ -63,27 +66,27 @@ public class ReddishCatHealthController : MonoBehaviour
 
     private void SetDefaultVariables()
     {
-        if (!GameMaster.instance.HasMadeExchange)
+        if (!gameMaster.HasMadeExchange)
         {
             currentHealth = maxHealth;
             isInvincible = false;
             isAlive = true;
-            GameMaster.instance.IsBossAlive = true;
-            GameMaster.instance.BossHealth = currentHealth;
-            GameMaster.instance.HasMadeExchange = true;
+            gameMaster.IsBossAlive = true;
+            gameMaster.BossHealth = currentHealth;
+            gameMaster.HasMadeExchange = true;
         }
-        else if (GameMaster.instance.HasMadeExchange && GameMaster.instance.IsBossAlive)
+        else if (gameMaster.HasMadeExchange && gameMaster.IsBossAlive)
         {
-            currentHealth = GameMaster.instance.BossHealth;
+            currentHealth = gameMaster.BossHealth;
             UpdateHealthBarUI();
             isAlive = true;
         }
-        else if (GameMaster.instance.HasMadeExchange && !GameMaster.instance.IsBossAlive)
+        else if (gameMaster.HasMadeExchange && !gameMaster.IsBossAlive)
         {
             UpdateHealthBarUI();
             isAlive = false;
             myAnimator.SetTrigger("beginDead");
-            transform.position = GameMaster.instance.BossDeathPosition;
+            transform.position = gameMaster.BossDeathPosition;
         }
     }
 
@@ -140,7 +143,7 @@ public class ReddishCatHealthController : MonoBehaviour
                 invincibleCooldownTimer = invincibleCooldown;
                 currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
                 UpdateHealthBarUI();
-                GameMaster.instance.BossHealth = currentHealth;
+                gameMaster.BossHealth = currentHealth;
             }
             if (currentHealth <= 0)
             {
@@ -161,20 +164,18 @@ public class ReddishCatHealthController : MonoBehaviour
     private void SetDeadState()
     {
         isAlive = false;
-        GameMaster.instance.IsBossAlive = false;
-        GameMaster.instance.BossDeathPosition = transform.position;
+        gameMaster.IsBossAlive = false;
+        gameMaster.BossDeathPosition = transform.position;
         reddishCatMovementController.CanMove = false;
         reddishCatMovementController.IsMoving = false;
     }
 
     private void DropHat()
     {
-        // TODO: call hat animation: it is going to spawn at the place where the redish cat is and then slowly fall down to a place the player can pick it up
-        // TODO: UI square to indicate the player has the hat in his inventory
         // TODO: orange cat sprite with the hat
         // TODO: new dialogue when the hat is given to the orange cat and another one for after that
-        // TODO: make sure entering the cave after black cat is defeat wont spawn him again
         Instantiate(hat, transform.position, Quaternion.identity);
+        gameMaster.hatStatus = HatStatus.AtFlor;
     }
 
     private void PlayDeathRoutine()
@@ -188,6 +189,7 @@ public class ReddishCatHealthController : MonoBehaviour
         {
             minion.GetComponentInChildren<ReddishMinionAnimationController>().PlayDeathRoutine();
             minion.GetComponent<ReddishMinionMovementController>().StoreDeadBodyPosition();
+            Debug.Log("Kill me!");
         }
     }
 

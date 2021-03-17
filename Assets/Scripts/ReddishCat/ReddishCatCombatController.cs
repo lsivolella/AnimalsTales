@@ -15,6 +15,7 @@ public class ReddishCatCombatController : MonoBehaviour
     ReddishCatHealthController reddishCatHealthController;
     ReddishCatAnimationController reddishMinionAnimationController;
     Rigidbody2D myRigidbody;
+    GameMaster gameMaster;
 
     // Cached Attack Variables
     private bool canAttack;
@@ -41,8 +42,9 @@ public class ReddishCatCombatController : MonoBehaviour
     private void GetAccessToComponents()
     {
         reddishCatHealthController = GetComponent<ReddishCatHealthController>();
-        myRigidbody = GetComponent<Rigidbody2D>();
         reddishMinionAnimationController = GetComponentInChildren<ReddishCatAnimationController>();
+        myRigidbody = GetComponent<Rigidbody2D>();
+        gameMaster = GameMaster.instance;
     }
 
     private void SetUpDefaultVariables()
@@ -61,7 +63,7 @@ public class ReddishCatCombatController : MonoBehaviour
 
     private void HandleAttackCooldown()
     {
-        if (!isAttacking && !onHold && !SceneController.instance.CinematicsOn && GameMaster.instance.IsBossAlive)
+        if (!isAttacking && !onHold && !SceneController.instance.CinematicsOn && gameMaster.IsBossAlive)
         {
             if (attackCooldownTimer <= 0)
             {

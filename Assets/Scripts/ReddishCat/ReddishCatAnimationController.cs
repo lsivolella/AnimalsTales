@@ -85,7 +85,8 @@ public class ReddishCatAnimationController : MonoBehaviour
         myAnimator.SetBool("liftBomb", false);
         // TODO: fix this line after dealing with bomb arc
         // BombController newBomb = FindObjectOfType<BombController>();
-        newBomb.GetComponent<BombController>().SetUpThrowAgainstPlayer();
+        if (newBomb != null)
+            newBomb.GetComponent<BombController>().SetUpThrowAgainstPlayer();
         reddishCatMovementController.CanMove = true;
         reddishCatCombatController.IsAttacking = false;
     }
