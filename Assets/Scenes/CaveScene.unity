@@ -2633,6 +2633,7 @@ MonoBehaviour:
   yarnBallThrowingSpeed: 0
   maximumArcHight: 1
   yarnBallFadeDuration: 0.5
+  yarnBallState: 0
 --- !u!58 &424086715
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5260,6 +5261,7 @@ MonoBehaviour:
   yarnBallThrowingSpeed: 0
   maximumArcHight: 1
   yarnBallFadeDuration: 0.5
+  yarnBallState: 0
 --- !u!58 &1343431556
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -18233,6 +18235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 1
+  durationOfMovement: 0.8
 --- !u!114 &1665999555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19323,6 +19326,16 @@ PrefabInstance:
       propertyPath: inventoryController
       value: 
       objectReference: {fileID: 1831447446}
+    - target: {fileID: 5966065619884413022, guid: 3b8a0f65b9d4a264fa9551f4766e8c5d,
+        type: 3}
+      propertyPath: alphaFactor
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 5966065619884413022, guid: 3b8a0f65b9d4a264fa9551f4766e8c5d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6113062834944328193, guid: 3b8a0f65b9d4a264fa9551f4766e8c5d,
         type: 3}
       propertyPath: dialogueController
@@ -19388,6 +19401,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 6113062834944328255, guid: 3b8a0f65b9d4a264fa9551f4766e8c5d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b8a0f65b9d4a264fa9551f4766e8c5d, type: 3}
 --- !u!114 &1875658649 stripped
@@ -19420,8 +19438,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b0f4b9d0e25a3d4c91bfcd930933beb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackCooldown: 0.4
-  bombAttackProbability: 0.7
+  attackCooldown: 0.8
+  bombAttackProbability: 0.4
   passiveDamage: -1
 --- !u!1 &1977531208
 GameObject:
@@ -20298,6 +20316,7 @@ MonoBehaviour:
   yarnBallThrowingSpeed: 0
   maximumArcHight: 1
   yarnBallFadeDuration: 0.5
+  yarnBallState: 0
 --- !u!114 &1795611201446379499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20532,6 +20551,7 @@ MonoBehaviour:
   yarnBallThrowingSpeed: 0
   maximumArcHight: 1
   yarnBallFadeDuration: 0.5
+  yarnBallState: 0
 --- !u!50 &1795611202170630413
 Rigidbody2D:
   serializedVersion: 4
@@ -21513,6 +21533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 1.5
+  durationOfMovement: 0.5
 --- !u!95 &5621496009565964443
 Animator:
   serializedVersion: 3
@@ -21715,9 +21736,10 @@ MonoBehaviour:
   bodyText: {fileID: 314006903}
   dialogueAnimator: {fileID: 314006902}
   dialogueContainer:
+  - containerName: Chat#1
     name: Reddish Cat
     sentences:
-    - Ah, So you found my lair, Black Cat. Came here to rescue that little clown's
+    - Ah, so you found my lair, Black Cat. Came here to rescue that little clown's
       hat? You will need to beat us first!
 --- !u!61 &6113062835289386232
 BoxCollider2D:
@@ -22054,7 +22076,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6778148771323496851
 Transform:
   m_ObjectHideFlags: 0
@@ -22086,6 +22108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 1
+  durationOfMovement: 0.8
 --- !u!114 &6778148771323496853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22616,7 +22639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158955870b7c4b44c9b092d3891b3057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 2
+  maxHealth: 5
   HealthBarUI: {fileID: 2608566928718876008}
   fullHealthBar: {fileID: 1044333519}
   invincibleCooldown: 0.4

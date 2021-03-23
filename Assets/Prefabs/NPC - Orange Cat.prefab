@@ -158,7 +158,7 @@ MonoBehaviour:
     - Black Cat, you made it alive!
     - Have you managed to defeat those bastards and retrieve my hat? Ha! Marvelous!
     - Thank you very much, Black Cat. You are a savior!
-  - containerName: Chat#2 - Post Fight, hat delivered
+  - containerName: Chat#3 - Post Fight, hat delivered
     name: Orange Cat
     sentences:
     - Are you still hanging around? There's not much to be done here. Go check out

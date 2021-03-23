@@ -14,8 +14,8 @@ public class YarnBallController : MonoBehaviour
     [SerializeField] float yarnBallFadeDuration = 0.5f;
 
     // Cached enum
-    public enum YarnBallState { NotThrown, FlyingToPlayer, GroundedAtPlayerArea, FlyingToEnemy, GroundedAtEnemyArea };
-    YarnBallState yarnBallState;
+    public enum YarnBallState { PickUp, Lifted , FlyingToPlayer, GroundedAtPlayerArea, FlyingToEnemy, GroundedAtEnemyArea };
+    public YarnBallState yarnBallState;
 
     // Cached References
     Rigidbody2D myRigidbody;
@@ -58,7 +58,7 @@ public class YarnBallController : MonoBehaviour
         // Prevent Yarn Ball from colliding with Enemy before it is thrown
         myCollider.enabled = false;
         // Set the Bomb initial state
-        yarnBallState = YarnBallState.NotThrown;
+        yarnBallState = YarnBallState.PickUp;
     }
 
     private void Update()
@@ -167,7 +167,7 @@ public class YarnBallController : MonoBehaviour
                 if (yarnBallState == YarnBallState.FlyingToPlayer) yarnBallState = YarnBallState.GroundedAtPlayerArea;
                 else if (yarnBallState == YarnBallState.FlyingToEnemy)
                 {
-                    yarnBallState = YarnBallState.NotThrown;
+                    yarnBallState = YarnBallState.PickUp;
                 }
             }
         }
@@ -288,5 +288,10 @@ public class YarnBallController : MonoBehaviour
             reddishMinion.GetComponent<ReddishMinionCombatController>().IsAttacking = false;
             Destroy(gameObject);
         }
+    }
+
+    public void LiftYarnBall()
+    {
+        yarnBallState = YarnBallState.Lifted;
     }
 }

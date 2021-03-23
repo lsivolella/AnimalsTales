@@ -71,6 +71,7 @@ public class ReddishMinionAnimationController : MonoBehaviour
         DefineSpriteDirection();
         myAnimator.SetBool("pickYarnBall", false);
         myAnimator.SetBool("liftYarnBall", true);
+        yarnBall.GetComponent<YarnBallController>().LiftYarnBall();
 
         if (isFacingRight)
             yarnBall.GetComponent<Rigidbody2D>().MovePosition(new Vector2(transform.position.x - 0.05f, transform.position.y + 0.58f));

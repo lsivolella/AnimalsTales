@@ -7,6 +7,7 @@ public class ReddishCatMovementController : MonoBehaviour
     // Serialized Parameters
     [Header("Movement")]
     [SerializeField] float movementSpeed = 1f;
+    [SerializeField] float durationOfMovement = 0.2f;
 
     // Cached References
     Rigidbody2D myRigidbody;
@@ -19,7 +20,6 @@ public class ReddishCatMovementController : MonoBehaviour
     private Vector2 movementDirection; // The direction the enemy has to move towards (-1 is left/down);
     private bool canMove;
     private bool isMoving;
-    private float durationOfMovement = 0.2f;
     private float movementDurationMeter; // The time the enemy has walked a certain direction
 
     // Properties

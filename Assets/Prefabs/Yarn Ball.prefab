@@ -167,9 +167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf8fadd573c717841b17d3fd79f9e348, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballSpeed: 1.5
+  ballSpeed: 2.5
   rotationSpeed: 300
-  yarnBallThrowingSpeed: 1
+  yarnBallThrowingSpeed: 2
   maximumArcHight: 1
   yarnBallFadeDuration: 1.5
 --- !u!114 &1795611202306855327
@@ -281,6 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360cc4452f8b6f048a86ec01bbe11082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  yarnBall: {fileID: 1795611202306855325}
 --- !u!50 &1284885811876499923
 Rigidbody2D:
   serializedVersion: 4
