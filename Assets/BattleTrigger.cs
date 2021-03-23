@@ -42,7 +42,6 @@ public class BattleTrigger : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Deactivate");
             foreach (GameObject enemy in minions)
             {
                 var minionCombatScript = enemy.GetComponent<ReddishMinionCombatController>();

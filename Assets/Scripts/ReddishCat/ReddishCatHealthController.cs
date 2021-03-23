@@ -100,7 +100,7 @@ public class ReddishCatHealthController : MonoBehaviour
     {
         CheckInvincibilityState();
         StartCoroutine(BlinkSpriteDuringInvincibility());
-        KillCat();
+        //KillCat();
     }
 
     private void CheckInvincibilityState()
@@ -172,8 +172,6 @@ public class ReddishCatHealthController : MonoBehaviour
 
     private void DropHat()
     {
-        // TODO: orange cat sprite with the hat
-        // TODO: new dialogue when the hat is given to the orange cat and another one for after that
         Instantiate(hat, transform.position, Quaternion.identity);
         gameMaster.hatStatus = HatStatus.AtFlor;
     }
@@ -189,7 +187,6 @@ public class ReddishCatHealthController : MonoBehaviour
         {
             minion.GetComponentInChildren<ReddishMinionAnimationController>().PlayDeathRoutine();
             minion.GetComponent<ReddishMinionMovementController>().StoreDeadBodyPosition();
-            Debug.Log("Kill me!");
         }
     }
 

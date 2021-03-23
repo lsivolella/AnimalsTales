@@ -25,7 +25,6 @@ public class NpcAnimationController : MonoBehaviour
         if (gameMaster.hatStatus == HatStatus.Delivered)
         {
             myAnimator.SetBool("hatDelivered", true);
-            Debug.Log(gameMaster.hatStatus);
         }
         else
             myAnimator.SetBool("hatDelivered", false);

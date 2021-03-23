@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class HealthBarUI : MonoBehaviour
 {
-    // TODO: figure out why player is suddenly losing reference to the HealthBarUI
-    // public static HealhBarUI Instance { get; private set; }
     [SerializeField] Image mask;
 
     public static HealthBarUI instance { get; private set; }

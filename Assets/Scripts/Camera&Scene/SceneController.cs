@@ -13,8 +13,6 @@ public class SceneController : MonoBehaviour
     [SerializeField] Vector2 townSpawnPoint;
     [SerializeField] Vector2 caveSpawnPoint;
 
-    GameObject playerGameObject;
-    private static bool firstTimePlayed = true;
     private static bool cinematicsOn = false;
     private static bool cinematicsPlayed = false;
 
@@ -68,17 +66,6 @@ public class SceneController : MonoBehaviour
     public void LoadTownScene()
     {
         SceneManager.LoadScene("TownScene");
-    }
-
-    public void ActivateVituralCamera2()
-    {
-        Debug.Log("Activate VCAM 2");
-
-    }
-
-    public void StartBlackCatDialogue()
-    {
-        Debug.Log("Black Cat Dialogue");
     }
 
     public void StartCinematics()

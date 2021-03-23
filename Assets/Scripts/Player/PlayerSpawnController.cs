@@ -42,11 +42,9 @@ public class PlayerSpawnController : MonoBehaviour
         if (collision.gameObject.name == "CaveSceneTrigger")
         {
             spawnPosition = spawnPoints[0].coordinates;
-            Debug.Log("Cave Trigger");
         }
         else if (collision.gameObject.name == "TownSceneTrigger")
         {
-            Debug.Log("Town Trigger");
             spawnPosition = spawnPoints[1].coordinates;
         }
     }

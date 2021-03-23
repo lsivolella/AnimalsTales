@@ -6,10 +6,6 @@ public class GameMaster : MonoBehaviour
 {
     public static GameMaster instance;
 
-    //private static bool isBossAlive;
-
-    //public bool IsBossAlive { get { return isBossAlive; } set { isBossAlive = value; } }
-
     #region Boss and Minions Variables
 
     public bool IsBossAlive { get; set; }
