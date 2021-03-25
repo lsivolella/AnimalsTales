@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efb205bdb22766e4da57b31c21a992e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
+  virtualCamera: {fileID: 0}
   townSpawnPoint: {x: 5.5, y: 10.8}
   caveSpawnPoint: {x: -1.5, y: -5.25}
-  playerGameObject: {fileID: 0}

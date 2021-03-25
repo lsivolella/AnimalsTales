@@ -24,6 +24,7 @@ public class PlayerHealthController : MonoBehaviour
     Animator myAnimator;
     SpriteRenderer spriteRenderer;
     GameMaster gameMaster;
+    SceneController sceneController;
 
     // Cached Health Variables
     public int GetCurrentHealth { get { return currentHealth; } }
@@ -65,6 +66,7 @@ public class PlayerHealthController : MonoBehaviour
         myAnimator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         gameMaster = GameMaster.instance;
+        sceneController = SceneController.instance;
     }
 
     private void SetUpGameSessionVariables()
@@ -191,6 +193,12 @@ public class PlayerHealthController : MonoBehaviour
         playerMovementController.IsInputFrozen = true;
         myAnimator.SetTrigger("isDead");
         myRigidbody.constraints = RigidbodyConstraints2D.FreezePosition;
+        Invoke("CallLoadMenuScene", 10f);
+    }
+
+    private void CallLoadMenuScene()
+    {
+        sceneController.LoadMainMenu();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

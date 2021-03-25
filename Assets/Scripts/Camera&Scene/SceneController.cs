@@ -68,6 +68,11 @@ public class SceneController : MonoBehaviour
         SceneManager.LoadScene("TownScene");
     }
 
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MenuScene");
+    }
+
     public void StartCinematics()
     {
         cinematicsOn = true;

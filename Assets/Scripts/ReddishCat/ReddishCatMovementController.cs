@@ -102,7 +102,7 @@ public class ReddishCatMovementController : MonoBehaviour
 
     private void MoveToOpositeDirection(Vector2 direction)
     {
-        movementDirection = direction;
+        movementDirection = new Vector2(direction.x, movementDirection.y);
         isMoving = true;
         movementDurationMeter = 0;
     }

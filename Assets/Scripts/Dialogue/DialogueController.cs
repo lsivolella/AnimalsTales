@@ -6,6 +6,7 @@ using TMPro;
 public class DialogueController : MonoBehaviour
 {
     [SerializeField] PlayerMovementController playerMovementController;
+    [SerializeField] PlayerTutorialController playerTutorialController;
     [SerializeField] float letterTypeSpeed = 1.0f;
 
     private TextMeshProUGUI dialogueHeader;
@@ -68,7 +69,10 @@ public class DialogueController : MonoBehaviour
     private void EndDialogue()
     {
         isConversationActive = false;
-        playerMovementController.FinishInteractionWithNpcs(interlocutor);
+        if (!playerMovementController)
+            playerTutorialController.FinishInteractionWithNpcs(interlocutor);
+        if (playerMovementController)
+            playerMovementController.FinishInteractionWithNpcs(interlocutor);
     }
 
     private void ClearDialogueBox()

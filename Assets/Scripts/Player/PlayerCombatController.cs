@@ -83,7 +83,7 @@ public class PlayerCombatController : MonoBehaviour
         {
             if (scratchCooldownTimer <= 0)
             {
-                if (Input.GetKeyDown(KeyCode.Period) && !playerMovementController.IsInputFrozen)
+                if (Input.GetKeyDown(KeyCode.O) && !playerMovementController.IsInputFrozen)
                 {
                     // Reset any velocity residual values. They may occur when the Player colliders with another body.
                     myRigidbody.velocity = Vector2.zero;
@@ -274,7 +274,6 @@ public class PlayerCombatController : MonoBehaviour
 
     private Vector2 CrossingWallPrevention()
     {
-        //RaycastHit2D raycast = Physics2D.Raycast(knockbackStartPosition, knockbackEndPosition - knockbackStartPosition, knockbackForce, LayerMask.GetMask("Walls"));
         RaycastHit2D linecast = Physics2D.Linecast(knockbackStartPosition, knockbackEndPosition, LayerMask.GetMask("Walls"));
         Vector2 newKnockbackEndPosition = knockbackEndPosition;
         if (linecast.point != Vector2.zero)
@@ -284,14 +283,7 @@ public class PlayerCombatController : MonoBehaviour
             newKnockbackEndPosition = new Vector2(linecast.point.x + (myCollider.bounds.extents.x * 2 * -1f * Mathf.Sign(knockbackDirectionNormalized.x)), 
                 linecast.point.y + (myCollider.bounds.extents.y * 2 * -1f * Mathf.Sign(knockbackDirectionNormalized.y)));
 
-            //if (Mathf.Abs(knockbackDirectionNormalized.x) >= Mathf.Abs(knockbackDirectionNormalized.y))
-            //    newKnockbackEndPosition = new Vector2(linecast.point.x + (myCollider.bounds.extents.x * -1f * Mathf.Sign(knockbackDirectionNormalized.x)), linecast.point.y);
-            //else
-            //    newKnockbackEndPosition = new Vector2(linecast.point.x, linecast.point.y + (myCollider.bounds.extents.y * -1f * Mathf.Sign(knockbackDirectionNormalized.y)));
-
         }
-
-
         //Debug.Log("Bounds: " + myCollider.bounds.center.ToString("f3"));
         //Debug.Log("Extents: " + myCollider.bounds.extents.ToString("f3"));
         //Debug.Log("Origin" + knockbackStartPosition.ToString("f3"));
@@ -299,7 +291,6 @@ public class PlayerCombatController : MonoBehaviour
         //Debug.Log("Contact Point:" + linecast.point.ToString("f3"));
         //Debug.Log("New Knockback End Position: " + newKnockbackEndPosition.ToString("f3"));
         //Debug.Log("Knockback Direction: " + (knockbackEndPosition - knockbackStartPosition).normalized.ToString("f3"));
-
 
         return newKnockbackEndPosition;
     }
