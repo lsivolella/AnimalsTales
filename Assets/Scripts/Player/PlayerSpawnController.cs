@@ -16,36 +16,39 @@ public class PlayerSpawnController : MonoBehaviour
     [SerializeField] List<SpawnPoint> spawnPoints;
 
     // Cached References
-    Rigidbody2D myRigidbody;
-
-    private static Vector2 spawnPosition;
-    private static bool firstTimePlayed = true;
-
-    public bool FirstTimePlayed { get { return firstTimePlayed; } }
+    GameMaster gameMaster;
 
     private void Awake()
     {
         GetAccessToComponents();
-        if (!firstTimePlayed)
-            transform.position = spawnPosition;
-            //myRigidbody.MovePosition(spawnPosition);
-        firstTimePlayed = false;
+        SetDefaultVariables();
     }
 
     private void GetAccessToComponents()
     {
-        myRigidbody = GetComponent<Rigidbody2D>();
+        gameMaster = GameMaster.instance;
+    }
+
+    private void SetDefaultVariables()
+    {
+        if (!gameMaster.PlayerSpawnSetUp)
+        {
+            gameMaster.PlayerDefaultPosition = transform.position;
+            gameMaster.PlayerSpawnSetUp = true;
+        }
+        else if (gameMaster.PlayerSpawnSetUp)
+            transform.position = gameMaster.PlayerSpawnPosition;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name == "CaveSceneTrigger")
         {
-            spawnPosition = spawnPoints[0].coordinates;
+            gameMaster.PlayerSpawnPosition = spawnPoints[0].coordinates;
         }
         else if (collision.gameObject.name == "TownSceneTrigger")
         {
-            spawnPosition = spawnPoints[1].coordinates;
+            gameMaster.PlayerSpawnPosition = spawnPoints[1].coordinates;
         }
     }
 }

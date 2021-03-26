@@ -9257,6 +9257,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: CanvasUI
       objectReference: {fileID: 0}
+    - target: {fileID: 2940918492086780107, guid: f661e60e59499b54391fa162235a5c17,
+        type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730854376048829928, guid: f661e60e59499b54391fa162235a5c17,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730854376048829928, guid: f661e60e59499b54391fa162235a5c17,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -128
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730854376048829928, guid: f661e60e59499b54391fa162235a5c17,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730854376048829928, guid: f661e60e59499b54391fa162235a5c17,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730854376048829928, guid: f661e60e59499b54391fa162235a5c17,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730854376048829928, guid: f661e60e59499b54391fa162235a5c17,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f661e60e59499b54391fa162235a5c17, type: 3}
 --- !u!114 &424637644 stripped

@@ -7,6 +7,10 @@ public class MenuCanvasController : MonoBehaviour
     [Header("Formating")]
     [SerializeField]
     private float yPadding = 1f;
+    [SerializeField]
+    private GameObject leftPaw;
+    [SerializeField]
+    private GameObject rightPaw;
     [Header("Menu Options")]
     [SerializeField]
     private TMP_Text startGame;
@@ -19,7 +23,8 @@ public class MenuCanvasController : MonoBehaviour
 
     private int index = 0;
     private int menuOptions = 3;
-    private Vector2 pawLocation;
+    private Vector2 leftPawPosition;
+    private Vector2 rightPawPosition;
     private Color originalColor;
     private Color selectedColor;
     private const string menuScene = "MenuScene";
@@ -28,11 +33,20 @@ public class MenuCanvasController : MonoBehaviour
     private const string creditsScene = "CreditsScene";
     private string activeScene;
 
+    private float convertedYPadding;
+
     // Start is called before the first frame update
     void Start()
     {
+        SetDefaultVariables();
+    }
+
+    private void SetDefaultVariables()
+    {
         originalColor = Color.white;
         selectedColor = Color.black;
+        convertedYPadding = yPadding * Screen.height / 1080;
+        activeScene = SceneManager.GetActiveScene().name;
     }
 
     // Update is called once per frame
@@ -44,39 +58,40 @@ public class MenuCanvasController : MonoBehaviour
     }
 
     private void GetNavigationInput()
-    {
-        activeScene = SceneManager.GetActiveScene().name;
+    { 
+        leftPawPosition = leftPaw.transform.position;
+        rightPawPosition = rightPaw.transform.position;
 
         switch (activeScene)
         {
             case menuScene:
                 if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
                 {
-                    pawLocation = transform.position;
-
-                    if (index == 2)
+                    if (index == menuOptions - 1)
                     {
-                        transform.position = new Vector2(pawLocation.x, pawLocation.y + 2 * yPadding);
+                        leftPaw.transform.position = new Vector2(leftPawPosition.x, leftPawPosition.y + 2 * convertedYPadding);
+                        rightPaw.transform.position = new Vector2(rightPawPosition.x, rightPawPosition.y + 2 * convertedYPadding);
                         index = 0;
                     }
                     else
                     {
-                        transform.position = new Vector2(pawLocation.x, pawLocation.y - yPadding);
+                        leftPaw.transform.position = new Vector2(leftPawPosition.x, leftPawPosition.y - convertedYPadding);
+                        rightPaw.transform.position = new Vector2(rightPawPosition.x, rightPawPosition.y - convertedYPadding);
                         index++;
                     }
                 }
                 if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
                 {
-                    pawLocation = transform.position;
-
                     if (index == 0)
                     {
-                        transform.position = new Vector2(pawLocation.x, pawLocation.y - 2 * yPadding);
+                        leftPaw.transform.position = new Vector2(leftPawPosition.x, leftPawPosition.y - 2 * convertedYPadding);
+                        rightPaw.transform.position = new Vector2(rightPawPosition.x, rightPawPosition.y - 2 * convertedYPadding);
                         index = 2;
                     }
                     else
                     {
-                        transform.position = new Vector2(pawLocation.x, pawLocation.y + yPadding);
+                        leftPaw.transform.position = new Vector2(leftPawPosition.x, leftPawPosition.y + convertedYPadding);
+                        rightPaw.transform.position = new Vector2(rightPawPosition.x, rightPawPosition.y + convertedYPadding);
                         index--;
                     }
                 }

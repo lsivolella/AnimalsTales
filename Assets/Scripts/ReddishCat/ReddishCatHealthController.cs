@@ -66,28 +66,30 @@ public class ReddishCatHealthController : MonoBehaviour
 
     private void SetDefaultVariables()
     {
-        if (!gameMaster.HasMadeExchange)
+        if (!gameMaster.BossHealthSetUp)
         {
             currentHealth = maxHealth;
-            isInvincible = false;
             isAlive = true;
             gameMaster.IsBossAlive = true;
             gameMaster.BossHealth = currentHealth;
-            gameMaster.HasMadeExchange = true;
+            gameMaster.BossMaxHealth = maxHealth;
+            gameMaster.BossHealthSetUp = true;
         }
-        else if (gameMaster.HasMadeExchange && gameMaster.IsBossAlive)
+        else if (gameMaster.BossHealthSetUp && gameMaster.IsBossAlive)
         {
             currentHealth = gameMaster.BossHealth;
-            UpdateHealthBarUI();
             isAlive = true;
+
         }
-        else if (gameMaster.HasMadeExchange && !gameMaster.IsBossAlive)
+        else if (gameMaster.BossHealthSetUp && !gameMaster.IsBossAlive)
         {
-            UpdateHealthBarUI();
+            currentHealth = gameMaster.BossHealth;
             isAlive = false;
             myAnimator.SetTrigger("beginDead");
             transform.position = gameMaster.BossDeathPosition;
         }
+        isInvincible = false;
+        UpdateHealthBarUI();
     }
 
     private void GetOriginalSpriteColor()

@@ -5,8 +5,6 @@ using static GameMaster;
 
 public class PlayerHealthController : MonoBehaviour
 {
-    public static PlayerHealthController instance;
-
     [Header("Health")]
     [SerializeField] HealthBarUI healthBar;
     [SerializeField] int maxHealth = 1;
@@ -23,14 +21,12 @@ public class PlayerHealthController : MonoBehaviour
     Rigidbody2D myRigidbody;
     Animator myAnimator;
     SpriteRenderer spriteRenderer;
+    Collider2D myCollider;
     GameMaster gameMaster;
     SceneController sceneController;
 
     // Cached Health Variables
-    public int GetCurrentHealth { get { return currentHealth; } }
-    public int GetMaxHealth { get { return maxHealth; } }
-    private static int currentHealth;
-    private static bool firstTimePlayed = true;
+    private int currentHealth;
 
     // Cached Invincibility Variables
     private float invincibleCooldownTimer;
@@ -43,19 +39,9 @@ public class PlayerHealthController : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        SetUpSingleton();
         GetAccessToComponents();
-        SetUpGameSessionVariables();
-        SetSceneLoadVariables();
+        SetUpDefaultVariables();
         GetOriginalSpriteColor();
-    }
-
-    private void SetUpSingleton()
-    {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(instance.gameObject);
     }
 
     private void GetAccessToComponents()
@@ -65,22 +51,25 @@ public class PlayerHealthController : MonoBehaviour
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        myCollider = GetComponent<Collider2D>();
         gameMaster = GameMaster.instance;
         sceneController = SceneController.instance;
     }
 
-    private void SetUpGameSessionVariables()
+    private void SetUpDefaultVariables()
     {
-        if (firstTimePlayed)
+        if (!gameMaster.PlayerHealthSetUp)
         {
             currentHealth = maxHealth;
             gameMaster.hatStatus = HatStatus.NotDropped;
+            gameMaster.PlayerHealth = currentHealth;
+            gameMaster.PlayerMaxHealth = maxHealth;
+            gameMaster.PlayerHealthSetUp = true;
         }
-        firstTimePlayed = false;
-    }
-
-    private void SetSceneLoadVariables()
-    {
+        else if (gameMaster.PlayerHealthSetUp)
+        {
+            currentHealth = gameMaster.PlayerHealth;
+        }
         isInvincible = false;
     }
 
@@ -147,6 +136,7 @@ public class PlayerHealthController : MonoBehaviour
             }
         }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+        gameMaster.PlayerHealth = currentHealth;
         UpdateHealthBarUI();
         if (currentHealth <= 0)
         {
@@ -191,9 +181,11 @@ public class PlayerHealthController : MonoBehaviour
     private void PlayDeathRoutine()
     {
         playerMovementController.IsInputFrozen = true;
-        myAnimator.SetTrigger("isDead");
+        myCollider.enabled = false;
         myRigidbody.constraints = RigidbodyConstraints2D.FreezePosition;
-        Invoke("CallLoadMenuScene", 10f);
+        myAnimator.SetTrigger("isDead");
+        gameMaster.ResetGame();
+        Invoke("CallLoadMenuScene", 6f);
     }
 
     private void CallLoadMenuScene()

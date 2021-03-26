@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static GameMaster;
@@ -41,7 +42,7 @@ public class PlayerMovementController : MonoBehaviour
     private void Awake()
     {
         GetAccessToComponents();
-        SetDefaultBoolStates();
+        SetDefaultVariables();
     }
 
     private void GetAccessToComponents()
@@ -51,10 +52,23 @@ public class PlayerMovementController : MonoBehaviour
         gameMaster = GameMaster.instance;
     }
 
-    private void SetDefaultBoolStates()
+    private void SetDefaultVariables()
     {
+        if (!gameMaster.PlayerMovementSetUp)
+        {
+            gameMaster.PlayerDefaultPosition = transform.position;
+            gameMaster.PlayerMovementSetUp = true;
+        }
         isInputFrozen = false;
         isEngagedInConversation = false;
+    }
+
+    private void ResetAnimationAndMovementVariables()
+    {
+        myAnimator.SetFloat("Look X", 0.0f);
+        myAnimator.SetFloat("Look Y", 1.0f);
+        myAnimator.SetFloat("Speed", 0.0f);
+        movement = Vector2.zero;
     }
 
     void Update()
@@ -198,5 +212,16 @@ public class PlayerMovementController : MonoBehaviour
     public void ResumeFromCinematics()
     {
         isEngagedInConversation = false;
+    }
+
+    public void FreezePlayerRigidbody()
+    {
+        myRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+    }
+    
+    public void UnfreezePlayerRigidbody()
+    {
+        myRigidbody.constraints = RigidbodyConstraints2D.None;
+        myRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 }
