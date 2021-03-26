@@ -7,7 +7,7 @@ public class ReddishCatCombatController : MonoBehaviour
     // Serialized Parameters
     [Header("Attack")]
     [SerializeField] float attackCooldown = 1f;
-    [SerializeField] [Range (0, 1)] float bombAttackProbability = 1f;
+    [SerializeField] [Range(0, 1)] float bombAttackProbability = 1f;
     [Header("Passive Damage")]
     [SerializeField] int passiveDamage = -1;    // Damage dealt is always negative (positive for Healing)
 
@@ -15,33 +15,41 @@ public class ReddishCatCombatController : MonoBehaviour
     ReddishCatHealthController reddishCatHealthController;
     ReddishCatAnimationController reddishMinionAnimationController;
     Rigidbody2D myRigidbody;
+    GameMaster gameMaster;
 
     // Cached Attack Variables
     private bool canAttack;
     private bool isAttacking;
     private float attackCooldownTimer;
 
+    // Cached General Variables
+    private bool onHold;
+
 
     // Properties
     public int PassiveDamage { get { return passiveDamage; } }
+    public bool CanAttack { get { return canAttack; } set { canAttack = value; } }
     public bool IsAttacking { get { return isAttacking; } set { isAttacking = value; } }
+    public bool OnHold { get { return onHold; } set { onHold = value; } }
 
 
     private void Awake()
     {
         GetAccessToComponents();
-        SetUpVariables();
+        SetUpDefaultVariables();
     }
 
     private void GetAccessToComponents()
     {
         reddishCatHealthController = GetComponent<ReddishCatHealthController>();
-        myRigidbody = GetComponent<Rigidbody2D>();
         reddishMinionAnimationController = GetComponentInChildren<ReddishCatAnimationController>();
+        myRigidbody = GetComponent<Rigidbody2D>();
+        gameMaster = GameMaster.instance;
     }
 
-    private void SetUpVariables()
+    private void SetUpDefaultVariables()
     {
+        onHold = true;
         canAttack = false;
         isAttacking = false;
         attackCooldownTimer = attackCooldown;
@@ -55,7 +63,7 @@ public class ReddishCatCombatController : MonoBehaviour
 
     private void HandleAttackCooldown()
     {
-        if (!isAttacking)
+        if (!isAttacking && !onHold && !SceneController.instance.CinematicsOn && gameMaster.IsBossAlive)
         {
             if (attackCooldownTimer <= 0)
             {
@@ -66,7 +74,7 @@ public class ReddishCatCombatController : MonoBehaviour
             {
                 canAttack = false;
                 attackCooldownTimer -= Time.deltaTime;
-            } 
+            }
         }
     }
 
@@ -77,6 +85,7 @@ public class ReddishCatCombatController : MonoBehaviour
             ShootArrow();
         else
             ShootBomb();
+        ShootBomb();
     }
 
     private void ShootArrow()
@@ -93,7 +102,7 @@ public class ReddishCatCombatController : MonoBehaviour
         if (canAttack && !isAttacking && !reddishCatHealthController.IsInvincible)
         {
             reddishMinionAnimationController.PrepareBomb();
-            attackCooldownTimer = attackCooldown; 
+            attackCooldownTimer = attackCooldown;
         }
     }
 

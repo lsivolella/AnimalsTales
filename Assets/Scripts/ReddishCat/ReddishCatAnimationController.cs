@@ -31,7 +31,16 @@ public class ReddishCatAnimationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ControlOnHoldState();
+    }
 
+    private void ControlOnHoldState()
+    {
+        if (reddishCatCombatController.OnHold)
+        {
+            myAnimator.SetFloat("Look X", 0f);
+            myAnimator.SetFloat("Speed", 0f);
+        }
     }
 
     public void AnimateMovement(Vector2 movementDirection)
@@ -65,18 +74,14 @@ public class ReddishCatAnimationController : MonoBehaviour
     {
         myAnimator.SetBool("pickBomb", false);
         myAnimator.SetBool("liftBomb", true);
-        // TODO: fix this line after dealing with bomb arc
-        // BombControllerTest newBomb = FindObjectOfType<BombControllerTest>();
-        // newBomb.GetComponent<Transform>().position = new Vector2(transform.position.x, transform.position.y + 0.5f);
         newBomb.GetComponent<Rigidbody2D>().MovePosition(new Vector2(transform.position.x, transform.position.y + 0.5f));
     }
 
     private void ThrowBomb()
     {
         myAnimator.SetBool("liftBomb", false);
-        // TODO: fix this line after dealing with bomb arc
-        // BombController newBomb = FindObjectOfType<BombController>();
-        newBomb.GetComponent<BombController>().SetUpThrowAgainstPlayer();
+        if (newBomb != null)
+            newBomb.GetComponent<BombController>().SetUpThrowAgainstPlayer();
         reddishCatMovementController.CanMove = true;
         reddishCatCombatController.IsAttacking = false;
     }

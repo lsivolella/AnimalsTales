@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameMaster;
 
 public class ReddishCatHealthController : MonoBehaviour
 {
@@ -12,17 +13,23 @@ public class ReddishCatHealthController : MonoBehaviour
     [SerializeField] float invincibleCooldown = 1f;
     [SerializeField] float blinkSpeed = 1f;
     [SerializeField] [Range(0, 1)] float alphaFactor;
+    [Header("Loot")]
+    [SerializeField] GameObject hat;
+    [Header("Minions")]
+    [SerializeField] List<GameObject> minions;
 
     // Cached References
-    Rigidbody2D myRigidbody2D;
+    ReddishCatMovementController reddishCatMovementController;
     SpriteRenderer spriteRenderer;
+    Animator myAnimator;
+    GameMaster gameMaster;
 
     // Cached Health Variables
-    public int GetCurrentHealth { get { return currentHealth; } }
-    public int GetMaxHealth { get { return maxHealth; } }
     private int currentHealth;
     private Vector3 healthBarScale;
     private float healthPercentage;
+    private bool isAlive;
+    public bool IsAlive { get { return isAlive; } }
 
     // Cached Invincibility Variables
     private float invincibleCooldownTimer;
@@ -30,15 +37,18 @@ public class ReddishCatHealthController : MonoBehaviour
     public bool IsInvincible { get { return isInvincible; } }
     private Color originalColor;
 
-
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        SetHealthBarUI();
-        SetEnemyHealth();
         GetAccessToComponents();
-        SetDefaultVariables();
-        GetOriginalSpriteColor();
+        SetHealthBarUI();
+    }
+
+    private void GetAccessToComponents()
+    {
+        reddishCatMovementController = GetComponent<ReddishCatMovementController>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        myAnimator = GetComponentInChildren<Animator>();
+        gameMaster = GameMaster.instance;
     }
 
     private void SetHealthBarUI()
@@ -47,19 +57,39 @@ public class ReddishCatHealthController : MonoBehaviour
         healthPercentage = healthBarScale.x / maxHealth;
     }
 
-    private void SetEnemyHealth()
+    // Start is called before the first frame update
+    void Start()
     {
-        currentHealth = maxHealth;
-    }
-
-    private void GetAccessToComponents()
-    {
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        SetDefaultVariables();
+        GetOriginalSpriteColor();
     }
 
     private void SetDefaultVariables()
     {
+        if (!gameMaster.BossHealthSetUp)
+        {
+            currentHealth = maxHealth;
+            isAlive = true;
+            gameMaster.IsBossAlive = true;
+            gameMaster.BossHealth = currentHealth;
+            gameMaster.BossMaxHealth = maxHealth;
+            gameMaster.BossHealthSetUp = true;
+        }
+        else if (gameMaster.BossHealthSetUp && gameMaster.IsBossAlive)
+        {
+            currentHealth = gameMaster.BossHealth;
+            isAlive = true;
+
+        }
+        else if (gameMaster.BossHealthSetUp && !gameMaster.IsBossAlive)
+        {
+            currentHealth = gameMaster.BossHealth;
+            isAlive = false;
+            myAnimator.SetTrigger("beginDead");
+            transform.position = gameMaster.BossDeathPosition;
+        }
         isInvincible = false;
+        UpdateHealthBarUI();
     }
 
     private void GetOriginalSpriteColor()
@@ -72,11 +102,12 @@ public class ReddishCatHealthController : MonoBehaviour
     {
         CheckInvincibilityState();
         StartCoroutine(BlinkSpriteDuringInvincibility());
+        //KillCat();
     }
 
     private void CheckInvincibilityState()
     {
-        if (isInvincible)
+        if (isInvincible && isAlive)
         {
             invincibleCooldownTimer -= Time.deltaTime;
             if (invincibleCooldownTimer < 0)
@@ -88,7 +119,7 @@ public class ReddishCatHealthController : MonoBehaviour
 
     IEnumerator BlinkSpriteDuringInvincibility()
     {
-        if (isInvincible)
+        if (isInvincible && isAlive)
         {
             while (invincibleCooldownTimer > 0)
             {
@@ -102,20 +133,27 @@ public class ReddishCatHealthController : MonoBehaviour
 
     public void ChangeEnemyHealth(int amount)
     {
-        if (isInvincible)
+        if (isAlive)
         {
-            return;
-        }
-        else
-        {
-            isInvincible = true;
-            invincibleCooldownTimer = invincibleCooldown;
-            currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-            UpdateHealthBarUI();
-        }
-        if (currentHealth <= 0)
-        {
-            gameObject.SetActive(false);
+            if (isInvincible)
+            {
+                return;
+            }
+            else
+            {
+                isInvincible = true;
+                invincibleCooldownTimer = invincibleCooldown;
+                currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+                UpdateHealthBarUI();
+                gameMaster.BossHealth = currentHealth;
+            }
+            if (currentHealth <= 0)
+            {
+                SetDeadState();
+                PlayDeathRoutine();
+                KillMinions();
+                Invoke("DropHat", 1f);
+            } 
         }
     }
 
@@ -125,16 +163,38 @@ public class ReddishCatHealthController : MonoBehaviour
         fullHealthBar.localScale = healthBarScale;
     }
 
+    private void SetDeadState()
+    {
+        isAlive = false;
+        gameMaster.IsBossAlive = false;
+        gameMaster.BossDeathPosition = transform.position;
+        reddishCatMovementController.CanMove = false;
+        reddishCatMovementController.IsMoving = false;
+    }
+
     private void DropHat()
     {
-        // TODO: call hat animation: it is going to spawn at the place where the redish cat is and then slowly fall down to a place the player can pick it up
-        // TODO: UI square to indicate the player has the hat in his inventory
-        // TODO: orange cat sprite with the hat
-        // TODO: new dialogue when the hat is given to the orange cat and another one for after that
-        // TODO: scene transition when player hit trigger (to be created) taking player to the cave
-        // TODO: transition to the way back... redish cat recovers all energy and has new dialogues
-        // TODO: make sure entering the cave after black cat is defeat wont spawn him again
-        // TODO: create a minion for the black cat that spawns randomly and attacks the player?
-        // TODO: create cave scene
+        Instantiate(hat, transform.position, Quaternion.identity);
+        gameMaster.hatStatus = HatStatus.AtFlor;
+    }
+
+    private void PlayDeathRoutine()
+    {
+        myAnimator.SetTrigger("isDead");
+    }
+
+    private void KillMinions()
+    {
+        foreach (GameObject minion in minions)
+        {
+            minion.GetComponentInChildren<ReddishMinionAnimationController>().PlayDeathRoutine();
+            minion.GetComponent<ReddishMinionMovementController>().StoreDeadBodyPosition();
+        }
+    }
+
+    private void KillCat()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+            ChangeEnemyHealth(-currentHealth);
     }
 }

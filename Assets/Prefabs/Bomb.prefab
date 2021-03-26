@@ -48,6 +48,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -161,6 +162,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -284,12 +286,12 @@ MonoBehaviour:
   myCollider: {fileID: 5636375317516246267}
   minimumThrowDistance: 2.2
   maximumThrowDistance: 4
-  minimumBombSpeed: 2
+  minimumBombSpeed: 2.5
   maximumArcHight: 1
   fragmentPrefab: {fileID: 715660484779827566, guid: 38d5d6b6965477b4eb20a070ddc74c35,
     type: 3}
   bombDamage: -1
-  explosionRadius: 0.7
+  explosionRadius: 0.85
   fightingArenaMinimumHorizontalPosition: -3
   fightingArenaMaximumHorizontalPosition: 3
 --- !u!114 &801065650342840958
@@ -304,6 +306,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 742a86f8ac8ac8c41bb95cd3c0c1df8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bombSpeed: 1
+  bombSpeed: 1.5
   throwDistance: 5
   maximumHight: 2

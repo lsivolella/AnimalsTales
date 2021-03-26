@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameMaster;
 
 public class PlayerHealthController : MonoBehaviour
 {
@@ -11,17 +12,20 @@ public class PlayerHealthController : MonoBehaviour
     [SerializeField] float invincibleCooldown = 1f;
     [SerializeField] float blinkSpeed = 1f;
     [SerializeField] [Range(0, 1)] float alphaFactor;
+    [Header("Inventory")]
+    [SerializeField] InventoryController inventoryController; 
 
     // Cached References
-    Rigidbody2D myRigidbody;
-    Animator myAnimator;
     PlayerMovementController playerMovementController;
     PlayerCombatController playerCombatController;
+    Rigidbody2D myRigidbody;
+    Animator myAnimator;
     SpriteRenderer spriteRenderer;
+    Collider2D myCollider;
+    GameMaster gameMaster;
+    SceneController sceneController;
 
     // Cached Health Variables
-    public int GetCurrentHealth { get { return currentHealth; } }
-    public int GetMaxHealth { get { return maxHealth; } }
     private int currentHealth;
 
     // Cached Invincibility Variables
@@ -30,37 +34,58 @@ public class PlayerHealthController : MonoBehaviour
     private bool isInvincible = false;
     private Color originalColor;
 
+    // Cached Inventory Variabless
+
     // Start is called before the first frame update
     private void Awake()
     {
         GetAccessToComponents();
-        SetPlayerHealth();
-        SetDefaultBoolStates();
+        SetUpDefaultVariables();
         GetOriginalSpriteColor();
     }
 
     private void GetAccessToComponents()
     {
-        myRigidbody = GetComponent<Rigidbody2D>();
-        myAnimator = GetComponentInChildren<Animator>();
         playerMovementController = GetComponent<PlayerMovementController>();
         playerCombatController = GetComponent<PlayerCombatController>();
+        myRigidbody = GetComponent<Rigidbody2D>();
+        myAnimator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        myCollider = GetComponent<Collider2D>();
+        gameMaster = GameMaster.instance;
+        sceneController = SceneController.instance;
     }
 
-    private void SetPlayerHealth()
+    private void SetUpDefaultVariables()
     {
-        currentHealth = maxHealth;
-    }
-
-    private void SetDefaultBoolStates()
-    {
+        if (!gameMaster.PlayerHealthSetUp)
+        {
+            currentHealth = maxHealth;
+            gameMaster.hatStatus = HatStatus.NotDropped;
+            gameMaster.PlayerHealth = currentHealth;
+            gameMaster.PlayerMaxHealth = maxHealth;
+            gameMaster.PlayerHealthSetUp = true;
+        }
+        else if (gameMaster.PlayerHealthSetUp)
+        {
+            currentHealth = gameMaster.PlayerHealth;
+        }
         isInvincible = false;
     }
 
     private void GetOriginalSpriteColor()
     {
         originalColor = spriteRenderer.color;
+    }
+
+    private void Start()
+    {
+        UpdateHealthBarUI(); 
+    }
+
+    public void UpdateHealthBarUI()
+    {
+        HealthBarUI.instance.SetValue(currentHealth / (float)maxHealth);
     }
 
     // Update is called once per frame
@@ -111,8 +136,8 @@ public class PlayerHealthController : MonoBehaviour
             }
         }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        HealthBarUI.Instance.SetValue(currentHealth / (float)maxHealth);
-        //healthBar.SetValue(currentHealth / (float)maxHealth);
+        gameMaster.PlayerHealth = currentHealth;
+        UpdateHealthBarUI();
         if (currentHealth <= 0)
         {
             PlayDeathRoutine();
@@ -135,7 +160,7 @@ public class PlayerHealthController : MonoBehaviour
             // Knockback Player
             playerCombatController.PlayKnockbackRoutine(playerPosition, objectPosition);
             // Camera Shake
-            CameraShake.Instance.CallShakeCoroutine(); 
+            CameraShake.instance.CallShakeCoroutine(); 
         }
     }
 
@@ -156,9 +181,24 @@ public class PlayerHealthController : MonoBehaviour
     private void PlayDeathRoutine()
     {
         playerMovementController.IsInputFrozen = true;
-        myAnimator.SetTrigger("isDead");
+        myCollider.enabled = false;
         myRigidbody.constraints = RigidbodyConstraints2D.FreezePosition;
-        // TODO Open Dead player pop-up
-        // TODO Choose to relive in "sanctuary" or pay gold to revive in place
+        myAnimator.SetTrigger("isDead");
+        gameMaster.ResetGame();
+        Invoke("CallLoadMenuScene", 6f);
+    }
+
+    private void CallLoadMenuScene()
+    {
+        sceneController.LoadMainMenu();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Hat"))
+        {
+            gameMaster.hatStatus = HatStatus.Inventory;
+            inventoryController.ActivateHat();
+        }
     }
 }

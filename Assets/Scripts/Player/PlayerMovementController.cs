@@ -1,20 +1,25 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameMaster;
 
 public class PlayerMovementController : MonoBehaviour
 {
-    // Serializes Parameters
+    // Serialized Parameters
     [Header("Movement")]
     [SerializeField] int movementSpeed = 1;
     [SerializeField] float freezeInputCooldown = 1f;
     [Header("Raycast")]
     [SerializeField] float raycastRange = 1f;
     [SerializeField] DialogueController dialogueController;
+    [Header("Inventory")]
+    [SerializeField] InventoryController inventoryController;
 
     // Cached References
     Rigidbody2D myRigidbody;
     Animator myAnimator;
+    GameMaster gameMaster;
 
     // Cached Movement Variables
     private float horizontalInput;
@@ -32,35 +37,51 @@ public class PlayerMovementController : MonoBehaviour
     private bool isEngagedInConversation;
     public bool IsEngagedInConversation { get { return isEngagedInConversation; } }
     RaycastHit2D npcRaycastHit;
-    NpcDialogueTrigger npcDialogueTrigger;
+    DialogueTrigger dialogueTrigger;
 
     private void Awake()
     {
         GetAccessToComponents();
-        SetDefaultBoolStates();
+        SetDefaultVariables();
     }
 
     private void GetAccessToComponents()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponentInChildren<Animator>();
-        //dialogueController = GetComponent<DialogueController>();
+        gameMaster = GameMaster.instance;
     }
 
-    private void SetDefaultBoolStates()
+    private void SetDefaultVariables()
     {
+        if (!gameMaster.PlayerMovementSetUp)
+        {
+            gameMaster.PlayerDefaultPosition = transform.position;
+            gameMaster.PlayerMovementSetUp = true;
+        }
         isInputFrozen = false;
         isEngagedInConversation = false;
     }
 
+    private void ResetAnimationAndMovementVariables()
+    {
+        myAnimator.SetFloat("Look X", 0.0f);
+        myAnimator.SetFloat("Look Y", 1.0f);
+        myAnimator.SetFloat("Speed", 0.0f);
+        movement = Vector2.zero;
+    }
+
     void Update()
     {
-        if (!isInputFrozen && !isEngagedInConversation)
+        if (!isInputFrozen && !isEngagedInConversation && !SceneController.instance.CinematicsOn)
         {
             GetMovementInput();
             ProcessPlayerAnimations();
         }
+        if (SceneController.instance.CinematicsOn)
+            isEngagedInConversation = true;
         InteractWithNpcs();
+        PassPlayerPositionToGameMaster();
     }
 
     private void GetMovementInput()
@@ -95,7 +116,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private void InteractWithNpcs()
     {
-        if (Input.GetKeyDown(KeyCode.Comma) && !dialogueController.IsConversationActive)
+        if (Input.GetKeyDown(KeyCode.P) && !dialogueController.IsConversationActive)
         {
             npcRaycastHit = CastDialogueRaycast();
 
@@ -103,17 +124,21 @@ public class PlayerMovementController : MonoBehaviour
             {
                 myAnimator.SetFloat("Speed", 0);
                 isEngagedInConversation = true;
-                npcDialogueTrigger = npcRaycastHit.collider.gameObject.
-                    GetComponent<NpcDialogueTrigger>();
-                npcDialogueTrigger.DisplayDialogue();
-                npcDialogueTrigger.TriggerDialogue();
-                
+                dialogueTrigger = npcRaycastHit.collider.gameObject.
+                    GetComponent<DialogueTrigger>();
+                dialogueTrigger.TriggerDialogue();
+
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Comma) && dialogueController.IsConversationActive)
+        else if (Input.GetKeyDown(KeyCode.P) && dialogueController.IsConversationActive)
         {
             dialogueController.DisplayNextSentence();
         }
+    }
+
+    private void PassPlayerPositionToGameMaster()
+    {
+        gameMaster.PlayerPosition = transform.position;
     }
 
     private RaycastHit2D CastDialogueRaycast()
@@ -123,33 +148,47 @@ public class PlayerMovementController : MonoBehaviour
         return _raycastHit2D;
     }
 
-    public void FinishInteractionWithNpcs()
+    public void FinishInteractionWithNpcs(GameObject interlocutor)
     {
-        isEngagedInConversation = false;
-        npcDialogueTrigger.HideDialogue();
+        if (!SceneController.instance.CinematicsOn)
+        {
+            isEngagedInConversation = false;
+            dialogueTrigger.HideDialogue();
+            DeliverHat(interlocutor);
+        }
+        else if (SceneController.instance.CinematicsOn)
+        {
+            interlocutor.GetComponent<DialogueTrigger>().HideDialogue();
+            FindObjectOfType<TimelineController>().StartTimeline();
+        }
+    }
+
+    private void DeliverHat(GameObject interlocutor)
+    {
+        if (interlocutor.name == "NPC - Orange Cat" && gameMaster.hatStatus == HatStatus.Inventory)
+        {
+            interlocutor.GetComponent<NpcAnimationController>().DoHatDance();
+            gameMaster.hatStatus = HatStatus.Delivered;
+            inventoryController.DeactivateHat();
+        }
     }
 
     private void FixedUpdate()
     {
-        // TODO: check if this if condition is really needed
-        if (!isInputFrozen)
-        {
-            ProcessMovementInput();
-        }
-        /*
-        myRigidbody2D = GetComponent<Rigidbody2D>();
-        myRigidbody2D.MovePosition(myRigidbody2D.position + movementSpeed * Vector2.down * Time.fixedDeltaTime);
-        */
+        ProcessMovementInput();
     }
 
     private void ProcessMovementInput()
     {
-        // Save player position in a Vector2
-        Vector2 position = myRigidbody.position;
-        // Create a new Vector2 with the player current position and the normalized player movement input (normalized to prevent faster diagonal movement)
-        position += movement.normalized * movementSpeed * Time.fixedDeltaTime;
-        // Pass the final Vector2 to the Rigidbody component
-        myRigidbody.MovePosition(position);
+        if (!isInputFrozen)
+        {
+            // Save player position in a Vector2
+            Vector2 position = myRigidbody.position;
+            // Create a new Vector2 with the player current position and the normalized player movement input (normalized to prevent faster diagonal movement)
+            position += movement.normalized * movementSpeed * Time.fixedDeltaTime;
+            // Pass the final Vector2 to the Rigidbody component
+            myRigidbody.MovePosition(position);
+        }
     }
 
     public void CallFreezeInputCoroutine()
@@ -168,5 +207,21 @@ public class PlayerMovementController : MonoBehaviour
         // Unfreeze input
         isInputFrozen = false;
         Time.timeScale = 1f;
+    }
+
+    public void ResumeFromCinematics()
+    {
+        isEngagedInConversation = false;
+    }
+
+    public void FreezePlayerRigidbody()
+    {
+        myRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+    }
+    
+    public void UnfreezePlayerRigidbody()
+    {
+        myRigidbody.constraints = RigidbodyConstraints2D.None;
+        myRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 }

@@ -7,29 +7,29 @@ public class ReddishCatMovementController : MonoBehaviour
     // Serialized Parameters
     [Header("Movement")]
     [SerializeField] float movementSpeed = 1f;
+    [SerializeField] float durationOfMovement = 0.2f;
 
     // Cached References
     Rigidbody2D myRigidbody;
     Collider2D myCollider;
     ReddishCatAnimationController reddishCatAnimationController;
     ReddishCatHealthController reddishCatHealthController;
+    ReddishCatCombatController reddishCatCombatController;
 
     // Cached Movement Variables
     private Vector2 movementDirection; // The direction the enemy has to move towards (-1 is left/down);
-    private bool canMove = true;
-    private bool isMoving = true;
-    private float durationOfMovement = 0.2f;
+    private bool canMove;
+    private bool isMoving;
     private float movementDurationMeter; // The time the enemy has walked a certain direction
 
     // Properties
     public bool CanMove { get { return canMove; } set { canMove = value; } }
-    public bool IsMoving { get { return isMoving; } set { isMoving = value;} }
+    public bool IsMoving { get { return isMoving; } set { isMoving = value; } }
 
 
     private void Awake()
     {
         GetAccessToComponents();
-        GenerateRandomMovementVector();
     }
 
     private void GetAccessToComponents()
@@ -38,17 +38,30 @@ public class ReddishCatMovementController : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         reddishCatAnimationController = GetComponentInChildren<ReddishCatAnimationController>();
         reddishCatHealthController = GetComponent<ReddishCatHealthController>();
+        reddishCatCombatController = GetComponent<ReddishCatCombatController>();
+    }
+
+    private void Start()
+    {
+        SetDefaultVariables();
+    }
+
+    private void SetDefaultVariables()
+    {
+        canMove = false;
+        isMoving = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         ControlMovement();
+        ControlOnHoldState();
     }
 
     private void ControlMovement()
     {
-        if (canMove)
+        if (canMove && !SceneController.instance.CinematicsOn && !reddishCatCombatController.OnHold && reddishCatHealthController.IsAlive)
         {
             if (!isMoving)
             {
@@ -67,19 +80,29 @@ public class ReddishCatMovementController : MonoBehaviour
         }
     }
 
-    private void GenerateRandomMovementVector()
+    private void ControlOnHoldState()
+    {
+        if (reddishCatCombatController.OnHold)
+        {
+            canMove = false;
+            isMoving = false;
+        }
+    }
+
+    public void GenerateRandomMovementVector()
     {
         // Picks a random direction for the Enemy to move towards
         movementDirection = new Vector2(Random.Range(-1f, 1f), 0f).normalized;
         // Resets any residual velocity
-        myRigidbody.velocity = Vector2.zero; 
+        myRigidbody.velocity = Vector2.zero;
+        canMove = true;
         isMoving = true;
         movementDurationMeter = 0;
     }
 
     private void MoveToOpositeDirection(Vector2 direction)
     {
-        movementDirection = direction;
+        movementDirection = new Vector2(direction.x, movementDirection.y);
         isMoving = true;
         movementDurationMeter = 0;
     }
@@ -103,14 +126,14 @@ public class ReddishCatMovementController : MonoBehaviour
 
     private void MoveEnemy()
     {
-        if (canMove)
+        if (canMove && !SceneController.instance.CinematicsOn && !reddishCatCombatController.OnHold && reddishCatHealthController.IsAlive)
         {
             if (isMoving)
             {
                 Vector2 position = myRigidbody.position;
                 position += movementDirection * movementSpeed * Time.fixedDeltaTime;
                 myRigidbody.MovePosition(position);
-            } 
+            }
         }
     }
 }
